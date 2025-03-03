@@ -1,0 +1,199 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --text-color: #2c3e50;
+    --light-bg: #f8f9fa;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--secondary-color) !important;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0 15px rgba(52, 152, 219, 0.5);
+}
+
+.card-header {
+    background-color: var(--light-bg);
+    border-bottom: 2px solid var(--secondary-color);
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.alert {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.footer {
+    background-color: var(--light-bg) !important;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding: 2rem 0;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.table {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: var(--light-bg);
+    border-bottom: 2px solid var(--secondary-color);
+    font-weight: 600;
+}
+
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+}
+
+.badge-success {
+    background-color: #2ecc71;
+}
+
+.badge-warning {
+    background-color: #f1c40f;
+}
+
+.badge-danger {
+    background-color: var(--accent-color);
+}
+
+/* Modal specific styles to prevent shaking and remove hover effects */
+.modal {
+    transform: none !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    backface-visibility: hidden;
+    perspective: 1000;
+    will-change: transform;
+    z-index: 1050;
+    animation: none !important;
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+    backface-visibility: hidden;
+    perspective: 1000;
+    will-change: transform;
+}
+
+.modal-content {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 8px;
+    animation: none !important;
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--secondary-color);
+    background-color: var(--light-bg);
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    background-color: var(--light-bg);
+}
+
+body.modal-open {
+    overflow: hidden;
+    padding-right: 0 !important;
+}
+
+.modal-backdrop {
+    z-index: 1040;
+}
+
+/* Vô hiệu hóa tất cả các hiệu ứng hover trong modal */
+.modal .card,
+.modal .btn,
+.modal .form-control,
+.modal-content,
+.modal-dialog {
+    transition: none !important;
+    transform: none !important;
+}
+
+.modal .card:hover {
+    transform: none !important;
+}
+
+/* Vô hiệu hóa hiệu ứng hover khi modal đang mở */
+.modal-open .card:hover,
+.modal-open .btn:hover {
+    transform: none !important;
+}
+
+/* Loại bỏ hiệu ứng fade khi modal xuất hiện */
+.modal.fade {
+    opacity: 1;
+}
+
+.modal.fade .modal-dialog {
+    transform: translate(0, 0) !important;
+}
+
+/* Đảm bảo không có animation nào được kích hoạt khi mở modal */
+.fade {
+    transition: none !important;
+}
