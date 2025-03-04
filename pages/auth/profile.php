@@ -165,7 +165,6 @@ function getStatusColor($status) {
                             <thead>
                                 <tr>
                                     <th>Tên Câu Lạc Bộ</th>
-                                    <th>Trạng Thái</th>
                                     <th>Ngày Tham Gia</th>
                                 </tr>
                             </thead>
@@ -176,11 +175,6 @@ function getStatusColor($status) {
                                         <a href="index.php?page=clubs&id=<?php echo $membership['id']; ?>" class="text-decoration-none">
                                             <?php echo htmlspecialchars($membership['name']); ?>
                                         </a>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-<?php echo getStatusColor($membership['status']); ?>">
-                                            <?php echo translateStatus($membership['status']); ?>
-                                        </span>
                                     </td>
                                     <td><?php echo date('d/m/Y', strtotime($membership['joined_at'])); ?></td>
                                 </tr>

@@ -12,8 +12,6 @@ define('APP_NAME', 'E-CLUB');
 // Include language helper
 require_once __DIR__ . '/includes/language.php';
 
-// Session is now handled in index.php before including this file
-
 // Database connection
 try {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);

@@ -3,145 +3,159 @@ function renderHeader($page)
 {
     ?>
     <!DOCTYPE html>
-    <html lang="en" class="h-100">
+    <html lang="vi" class="h-100">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><?php echo APP_NAME; ?></title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Core CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+        <!-- Additional Libraries -->
+        <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
         <style>
             :root {
-                --primary-color: #4f46e5;
-                --secondary-color: #818cf8;
-                --gradient-start: #4f46e5;
-                --gradient-end: #818cf8;
+                --primary-color: #2563eb;
+                --secondary-color: #3b82f6;
+                --accent-color: #60a5fa;
+                --success-color: #34d399;
+                --warning-color: #fbbf24;
+                --danger-color: #f87171;
+                --background-color: #f8fafc;
+                --text-color: #1e293b;
+                --border-radius: 12px;
+                --transition-speed: 0.3s;
             }
 
             body {
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
-                background-color: #f8f9fa;
-                font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+                background-color: var(--background-color);
+                font-family: 'Be Vietnam Pro', sans-serif;
+                color: var(--text-color);
             }
 
             .navbar {
-                background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)) !important;
-                box-shadow: 0 4px 15px rgba(0,0,0,.03);
-                padding: 0.8rem 0;
+                background: rgba(255, 255, 255, 0.9) !important;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                padding: 1rem 0;
             }
 
             .navbar-brand {
-                font-weight: 600;
-                font-size: 1.4rem;
-                background: linear-gradient(to right, #fff, rgba(255,255,255,0.8));
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                font-weight: 700;
+                font-size: 1.5rem;
+                color: var(--primary-color);
+                letter-spacing: -0.5px;
             }
 
             .nav-link {
                 font-weight: 500;
+                color: var(--text-color) !important;
                 padding: 0.8rem 1.2rem !important;
-                transition: all 0.4s ease;
-                position: relative;
-                opacity: 0.9;
+                border-radius: var(--border-radius);
+                transition: all var(--transition-speed) ease;
+                margin: 0 3px;
             }
 
             .nav-link:hover {
-                opacity: 1;
-                box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+                color: var(--primary-color) !important;
+                background: rgba(37, 99, 235, 0.1);
+                transform: translateY(-1px);
             }
 
-            .nav-link.active::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
-                width: 20px;
-                height: 3px;
-                background-color: #fff;
-                border-radius: 10px;
+            .nav-link.active {
+                color: #fff !important;
+                background: var(--primary-color);
             }
 
             .container.content {
                 flex: 1 0 auto;
-                padding: 2.5rem 1rem;
+                padding: 2rem 1rem;
+                max-width: 1200px;
+                margin: 0 auto;
             }
 
             .card {
                 border: none;
-                border-radius: 16px;
-                box-shadow: 0 4px 20px rgba(0,0,0,.05);
-                transition: all 0.4s ease;
+                border-radius: var(--border-radius);
+                background: #fff;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+                transition: all var(--transition-speed) ease;
                 overflow: hidden;
             }
 
             .card:hover {
-                box-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
-            }
-
-            .card-header {
-                background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(129, 140, 248, 0.1));
-                border-bottom: none;
-                padding: 1.2rem 1.5rem;
-            }
-
-            .footer {
-                background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)) !important;
-                color: rgba(255,255,255,0.9);
-                padding: 1.5rem 0;
-                margin-top: auto;
-                font-weight: 300;
+                box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
             }
 
             .btn {
-                border-radius: 50px;
-                padding: 0.6rem 1.8rem;
+                border-radius: var(--border-radius);
+                padding: 0.7rem 1.5rem;
                 font-weight: 500;
-                transition: all 0.3s ease;
-                position: relative;
-                overflow: hidden;
+                transition: all var(--transition-speed) ease;
             }
 
             .btn-primary {
-                background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+                background: var(--primary-color);
                 border: none;
             }
 
             .btn-primary:hover {
-                box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+                background: var(--secondary-color);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
             }
 
             .alert {
-                border-radius: 12px;
                 border: none;
+                border-radius: var(--border-radius);
                 padding: 1rem 1.5rem;
-                box-shadow: 0 4px 15px rgba(0,0,0,.05);
             }
 
             .badge {
                 padding: 0.5em 1em;
-                border-radius: 50px;
+                border-radius: 20px;
                 font-weight: 500;
             }
 
+            .footer {
+                background: #fff;
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                color: var(--text-color);
+                padding: 2rem 0;
+                margin-top: auto;
+            }
+
+            /* Custom Scrollbar */
             ::-webkit-scrollbar {
-                width: 8px;
+                width: 10px;
             }
 
             ::-webkit-scrollbar-track {
-                background: #f1f1f1;
+                background: var(--background-color);
             }
 
             ::-webkit-scrollbar-thumb {
-                background: var(--secondary-color);
+                background: var(--accent-color);
                 border-radius: 10px;
             }
 
             ::-webkit-scrollbar-thumb:hover {
                 background: var(--primary-color);
+            }
+
+            /* Animations */
+            .fade-in {
+                animation: fadeIn 0.5s ease-in;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
             }
         </style>
     </head>
@@ -215,14 +229,68 @@ function renderFooter()
         </div>
 
         <footer class="footer">
-            <div class="container text-center">
-                <span>&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?>. All rights reserved.</span>
+            <div class="container">
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-4 text-center text-md-start">
+                        <span class="footer-brand"><?php echo APP_NAME; ?></span>
+                        <p class="text-muted mt-2 mb-0">
+                            <small>Nền tảng quản lý câu lạc bộ hiện đại</small>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="index.php?page=about" class="footer-link">Về chúng tôi</a>
+                            <a href="index.php?page=support" class="footer-link">Hỗ trợ</a>
+                            <a href="index.php?page=contact" class="footer-link">Liên hệ</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center text-md-end">
+                        <div class="mb-2">
+                            <a href="#" class="footer-link"><i class="bi bi-facebook me-2"></i></a>
+                            <a href="#" class="footer-link"><i class="bi bi-twitter me-2"></i></a>
+                            <a href="#" class="footer-link"><i class="bi bi-instagram"></i></a>
+                        </div>
+                        <small class="text-muted">&copy; <?php echo date('Y'); ?> <?php echo APP_NAME; ?></small>
+                    </div>
+                </div>
             </div>
         </footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="assets/js/main.js"></script>
+        <!-- Core Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <!-- Animation Library -->
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+        <script>
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+
+            // Enhanced UI Interactions
+            $(document).ready(function() {
+                // Add fade-in animation to cards
+                $('.card').addClass('fade-in');
+                
+                // Smooth scroll
+                $('a[href*="#"]').on('click', function(e) {
+                    e.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: $($(this).attr('href')).offset().top - 100
+                    }, 500, 'linear');
+                });
+
+                // Navbar scroll effect
+                $(window).scroll(function() {
+                    if ($(window).scrollTop() > 50) {
+                        $('.navbar').addClass('shadow-sm');
+                    } else {
+                        $('.navbar').removeClass('shadow-sm');
+                    }
+                });
+            });
+        </script>
     </body>
     </html>
     <?php

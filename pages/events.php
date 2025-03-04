@@ -108,37 +108,108 @@ if (isset($_GET['id'])) {
         <div class="row g-4">
             <div class="col-md-8">
                 <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h2 class="card-title"><?php echo htmlspecialchars($event['title']); ?></h2>
-                        <h6 class="card-subtitle mb-2 text-muted"><?php echo __('club_name'); ?>: <?php echo htmlspecialchars($event['club_name']); ?></h6>
-                        <p class="card-text"><?php echo nl2br(htmlspecialchars($event['description'])); ?></p>
-                        <div class="mb-3">
-                            <strong><?php echo __('event_date'); ?>:</strong> <?php echo date('d/m/Y', strtotime($event['event_date'])); ?>
+                    <div class="card-header bg-primary text-white p-4">
+                        <h2 class="card-title mb-1"><?php echo htmlspecialchars($event['title']); ?></h2>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-people-fill me-2"></i>
+                            <span><?php echo htmlspecialchars($event['club_name']); ?></span>
                         </div>
-                        <div class="mb-3">
-                            <strong><?php echo __('status'); ?>:</strong> <?php echo $event['attendance_count']; ?> <?php echo __('present'); ?>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="event-calendar text-center">
+                                    <div class="calendar-month bg-light text-primary p-2">
+                                        <?php 
+                                        $months = array(
+                                            'January' => 'Tháng 1', 'February' => 'Tháng 2', 'March' => 'Tháng 3',
+                                            'April' => 'Tháng 4', 'May' => 'Tháng 5', 'June' => 'Tháng 6',
+                                            'July' => 'Tháng 7', 'August' => 'Tháng 8', 'September' => 'Tháng 9',
+                                            'October' => 'Tháng 10', 'November' => 'Tháng 11', 'December' => 'Tháng 12'
+                                        );
+                                        $month = date('F', strtotime($event['event_date']));
+                                        echo $months[$month];
+                                        ?>
+                                    </div>
+                                    <div class="calendar-day p-3">
+                                        <span class="display-4 fw-bold"><?php echo date('d', strtotime($event['event_date'])); ?></span>
+                                        <span class="d-block">
+                                            <?php 
+                                            $days = array(
+                                                'Monday' => 'Thứ Hai', 'Tuesday' => 'Thứ Ba', 'Wednesday' => 'Thứ Tư',
+                                                'Thursday' => 'Thứ Năm', 'Friday' => 'Thứ Sáu', 'Saturday' => 'Thứ Bảy',
+                                                'Sunday' => 'Chủ Nhật'
+                                            );
+                                            $day = date('l', strtotime($event['event_date']));
+                                            echo $days[$day];
+                                            ?>
+                                        </span>
+                                        <span class="d-block text-muted">Năm <?php echo date('Y', strtotime($event['event_date'])); ?></span>
+                                    </div>
+                                    <div class="calendar-time bg-light text-primary p-2">
+                                        <i class="bi bi-clock me-1"></i>
+                                        <?php echo date('H:i', strtotime($event['event_date'])); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="event-stats">
+                                    <div class="row g-3">
+                                        <div class="col-6">
+                                            <div class="p-3 bg-light rounded-3">
+                                                <div class="text-muted mb-1">Số người tham gia</div>
+                                                <div class="h3 mb-0"><?php echo $event['attendance_count']; ?> người</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="p-3 bg-light rounded-3">
+                                                <div class="text-muted mb-1">Trạng thái</div>
+                                                <div class="h5 mb-0">
+                                                    <?php if (strtotime($event['event_date']) > time()): ?>
+                                                        <span class="badge bg-primary">Sắp diễn ra</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-success">Đã kết thúc</span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <h5 class="mb-3">Chi tiết sự kiện</h5>
+                        <div class="event-description mb-4">
+                            <?php echo nl2br(htmlspecialchars($event['description'])); ?>
+                        </div>  
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
                 <div class="card shadow-sm">
                     <div class="card-header bg-light">
-                        <h5 class="card-title mb-0"><i class="bi bi-people me-2"></i><?php echo __('attendees'); ?></h5>
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-people me-2"></i>Danh sách điểm danh
+                        </h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="list-group list-group-flush">
                             <?php foreach ($attendees as $attendee): ?>
                             <div class="list-group-item">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <?php echo htmlspecialchars($attendee['name']); ?>
-                                        <small class="text-muted d-block">
-                                            <?php echo date('M j, Y', strtotime($attendee['created_at'])); ?>
+                                        <div class="fw-500"><?php echo htmlspecialchars($attendee['name']); ?></div>
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock me-1"></i>
+                                            <?php 
+                                            setlocale(LC_TIME, 'vi_VN');
+                                            echo date('d/m/Y - H:i', strtotime($attendee['created_at'])); 
+                                            ?>
                                         </small>
                                     </div>
                                     <span class="badge bg-<?php echo $attendee['status'] === 'present' ? 'success' : 'danger'; ?>">
-                                        <?php echo ucfirst($attendee['status']); ?>
+                                        <?php echo $attendee['status'] === 'present' ? 'Có mặt' : 'Vắng mặt'; ?>
                                     </span>
                                 </div>
                             </div>
@@ -149,6 +220,42 @@ if (isset($_GET['id'])) {
             </div>
         </div>
     </div>
+
+<style>
+.event-calendar {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.calendar-month {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.calendar-day {
+    background: white;
+}
+
+.calendar-day .display-4 {
+    line-height: 1;
+    color: var(--primary-color);
+}
+
+.event-description {
+    line-height: 1.7;
+    color: #444;
+}
+
+.attendance-form {
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.fw-500 {
+    font-weight: 500;
+}
+</style>
     
 <?php } else {
     // List all upcoming events
@@ -181,20 +288,53 @@ if (isset($_GET['id'])) {
         <div class="row g-4">
             <?php foreach ($events as $event): ?>
             <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo htmlspecialchars($event['title']); ?></h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><?php echo htmlspecialchars($event['club_name']); ?></h6>
-                        <p class="card-text"><?php echo htmlspecialchars(substr($event['description'], 0, 100)) . '...'; ?></p>
-                        <div class="mb-3">
-                            <small class="text-muted">
-                                <i class="bi bi-calendar"></i> 
-                                <?php echo date('F j, Y g:i A', strtotime($event['event_date'])); ?>
-                            </small>
+                <div class="card h-100 event-card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="event-date-badge mb-3">
+                            <?php 
+                            $event_date = strtotime($event['event_date']);
+                            $days = array(
+                                'Monday' => 'Thứ Hai', 'Tuesday' => 'Thứ Ba', 'Wednesday' => 'Thứ Tư',
+                                'Thursday' => 'Thứ Năm', 'Friday' => 'Thứ Sáu', 'Saturday' => 'Thứ Bảy',
+                                'Sunday' => 'Chủ Nhật'
+                            );
+                            $day = date('l', $event_date);
+                            ?>
+                            <div class="date-box text-center">
+                                <span class="month"><?php echo 'Tháng ' . date('n', $event_date); ?></span>
+                                <span class="day"><?php echo date('d', $event_date); ?></span>
+                                <span class="weekday"><?php echo $days[$day]; ?></span>
+                            </div>
+                            <div class="time">
+                                <i class="bi bi-clock me-1"></i>
+                                <?php echo date('H:i', $event_date); ?>
+                            </div>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge bg-primary"><?php echo $event['attendance_count']; ?> Attending</span>
-                            <a href="index.php?page=events&id=<?php echo $event['id']; ?>" class="btn btn-primary">View Details</a>
+
+                        <div class="event-club mb-2">
+                            <span class="badge bg-primary-subtle text-primary">
+                                <i class="bi bi-people-fill me-1"></i>
+                                <?php echo htmlspecialchars($event['club_name']); ?>
+                            </span>
+                        </div>
+
+                        <h5 class="card-title mb-3"><?php echo htmlspecialchars($event['title']); ?></h5>
+                        
+                        <p class="card-text text-muted"><?php echo htmlspecialchars(substr($event['description'], 0, 100)) . '...'; ?></p>
+                        
+                        <div class="event-card-footer mt-auto pt-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="event-stats">
+                                    <small class="text-muted">
+                                        <i class="bi bi-person-check me-1"></i>
+                                        <?php echo $event['attendance_count']; ?> người tham gia
+                                    </small>
+                                </div>
+                                <a href="index.php?page=events&id=<?php echo $event['id']; ?>" class="btn btn-primary btn-sm">
+                                    Xem chi tiết
+                                    <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,4 +342,90 @@ if (isset($_GET['id'])) {
             <?php endforeach; ?>
         </div>
     </div>
+<style>
+.event-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.event-date-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.date-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
+}
+
+.date-box .month {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.date-box .day {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.date-box .weekday {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.time {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.event-club {
+    margin-top: -5px;
+}
+
+.event-club .badge {
+    font-weight: 500;
+    padding: 0.5em 1em;
+}
+
+.event-footer {
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 1rem;
+    margin-top: auto;
+}
+
+.btn-primary {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+}
+
+.card-title {
+    font-weight: 600;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
+
 <?php } ?>

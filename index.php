@@ -19,7 +19,10 @@ $allowed_pages = [
     'club_leader' => ['public' => false, 'club_leader' => true],
     'logout' => ['public' => false],
     'list_events' => ['public' => false, 'admin' => true],
-    'list_clubs' => ['public' => false, 'admin' => true]
+    'list_clubs' => ['public' => false, 'admin' => true],
+    'about' => ['public' => true],
+    'support' => ['public' => true],
+    'contact' => ['public' => true]
 ];
 
 // Check if the requested page exists and user has permission
@@ -64,6 +67,8 @@ if ($page === 'admin' || $page === 'list_events' || $page === 'list_clubs') {
     // Include the requested page
     if (in_array($page, ['login', 'register', 'logout', 'profile'])) {
         $page_path = "pages/auth/{$page}.php";
+    } elseif (in_array($page, ['about', 'support', 'contact'])) {
+        $page_path = "pages/about/{$page}.php";
     } else {
         $page_path = "pages/{$page}.php";
     }

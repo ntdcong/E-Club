@@ -66,7 +66,7 @@ $top_events = $result->fetch_all(MYSQLI_ASSOC);
                     <span class="badge bg-danger ms-2"><?php echo $pending_count; ?></span>
                     <?php endif; ?>
                 </a>
-                <a href="index.php?page=events" class="btn btn-success d-block">Xem tất cả sự kiện</a>
+                <a href="index.php?page=list_events" class="btn btn-success d-block">Xem tất cả sự kiện</a>
             </div>
         </div>
     </div>
