@@ -26,12 +26,6 @@ $result = $conn->query($sql);
 $users = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <h2>Quản lý người dùng</h2>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-12">
         <div class="card">

@@ -16,7 +16,7 @@ return [
     'quick_links' => 'Liên kết nhanh',
     'browse_clubs' => 'Các câu lạc bộ',
     'welcome_to' => 'Chào mừng đến với {name}',
-    'home_description' => 'Tham gia câu lạc bộ, tham gia sự kiện và kết nối với các thành viên khác!',
+    'home_description' => 'Tham gia câu lạc bộ, sự kiện và kết nối với các thành viên khác!',
     'get_started_message' => 'Bắt đầu bằng cách tạo tài khoản hoặc đăng nhập.',
     
     // Messages

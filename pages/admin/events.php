@@ -30,12 +30,6 @@ $result = $conn->query($sql);
 $pending_events = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <h2>Duyệt sự kiện mới</h2>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-12">
         <div class="card">

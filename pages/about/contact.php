@@ -53,17 +53,6 @@ require_once __DIR__ . '/../../templates/layout.php';
                     </div>
                 </div>
                 
-                <div class="contact-item d-flex">
-                    <div class="contact-icon bg-primary text-white me-3">
-                        <i class="bi bi-clock"></i>
-                    </div>
-                    <div>
-                        <h3 class="h6 fw-bold mb-1">Giờ Làm Việc</h3>
-                        <p class="mb-1 text-muted">Thứ Hai - Thứ Sáu: 8:00 - 17:00</p>
-                        <p class="mb-0 text-muted">Thứ Bảy: 8:00 - 12:00</p>
-                    </div>
-                </div>
-                
                 <div class="mt-5">
                     <h3 class="h6 fw-bold mb-3">Kết Nối Với Chúng Tôi</h3>
                     <div class="d-flex gap-2">

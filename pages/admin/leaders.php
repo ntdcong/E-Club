@@ -99,12 +99,6 @@ $result = $conn->query($sql);
 $available_users = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <h2>Quản lý Trưởng CLB</h2>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-12">
         <div class="card">

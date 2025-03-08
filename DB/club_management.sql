@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 27, 2025 at 08:44 AM
+-- Generation Time: Mar 04, 2025 at 10:58 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,10 +40,14 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `event_id`, `user_id`, `status`, `created_at`) VALUES
-(1, 1, 4, '', '2025-02-26 17:30:28'),
-(2, 1, 4, '', '2025-02-26 17:30:33'),
-(3, 1, 6, '', '2025-02-27 06:31:56'),
-(4, 1, 6, '', '2025-02-27 06:32:01');
+(13, 1, 7, 'absent', '2025-03-01 10:08:15'),
+(14, 1, 8, 'present', '2025-03-01 10:08:20'),
+(15, 1, 9, 'present', '2025-03-01 10:08:20'),
+(16, 2, 7, 'present', '2025-03-01 11:21:46'),
+(17, 2, 8, 'present', '2025-03-01 11:21:48'),
+(18, 2, 6, 'absent', '2025-03-01 11:21:49'),
+(19, 2, 9, 'present', '2025-03-01 11:21:51'),
+(20, 5, 7, 'present', '2025-03-04 01:19:13');
 
 -- --------------------------------------------------------
 
@@ -55,17 +59,19 @@ CREATE TABLE `clubs` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('active','inactive') NOT NULL DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `clubs`
 --
 
-INSERT INTO `clubs` (`id`, `name`, `description`, `created_at`) VALUES
-(1, 'KARATE', 'Đam mê võ thuật bơi vào đây', '2025-02-26 15:36:19'),
-(2, 'BÓNG ĐÁ', 'Mê bóng thì bơi vào.', '2025-02-26 15:59:36'),
-(3, 'NHẠC KỊCH', 'Ca hát là đam mê, diễn xuất là thượng hạng ~~~', '2025-02-27 07:23:19');
+INSERT INTO `clubs` (`id`, `name`, `description`, `created_at`, `status`) VALUES
+(1, 'KARATE', 'Đam mê võ thuật bơi vào đây', '2025-02-26 15:36:19', 'active'),
+(2, 'BÓNG ĐÁ', 'Mê bóng thì vào', '2025-02-26 15:59:36', 'active'),
+(3, 'NHẠC KỊCH', 'Ca hát là đam mê, diễn xuất là thượng hạng.', '2025-02-27 07:23:19', 'active'),
+(5, 'Mạng Máy Tính', 'Chia sẻ đam mê với chuyên nghành mạng máy tính', '2025-03-04 01:16:25', 'active');
 
 -- --------------------------------------------------------
 
@@ -86,7 +92,9 @@ CREATE TABLE `club_leaders` (
 
 INSERT INTO `club_leaders` (`id`, `user_id`, `club_id`, `appointed_at`) VALUES
 (1, 5, 1, '2025-02-26 15:40:34'),
-(2, 6, 2, '2025-02-26 16:51:06');
+(2, 6, 2, '2025-02-26 16:51:06'),
+(3, 10, 3, '2025-03-03 02:00:47'),
+(4, 11, 5, '2025-03-04 01:16:42');
 
 -- --------------------------------------------------------
 
@@ -108,7 +116,14 @@ CREATE TABLE `club_members` (
 
 INSERT INTO `club_members` (`id`, `user_id`, `club_id`, `status`, `joined_at`) VALUES
 (1, 6, 1, 'approved', '2025-02-26 15:37:24'),
-(2, 7, 2, 'approved', '2025-02-26 17:16:21');
+(2, 7, 2, 'approved', '2025-02-26 17:16:21'),
+(3, 8, 1, 'approved', '2025-03-01 10:05:47'),
+(4, 8, 2, 'approved', '2025-03-01 10:05:50'),
+(5, 9, 1, 'approved', '2025-03-01 10:06:18'),
+(6, 9, 2, 'approved', '2025-03-01 10:06:20'),
+(7, 7, 1, 'approved', '2025-03-01 11:18:37'),
+(8, 7, 3, 'approved', '2025-03-01 11:18:40'),
+(10, 7, 5, 'approved', '2025-03-04 01:18:44');
 
 -- --------------------------------------------------------
 
@@ -132,8 +147,11 @@ CREATE TABLE `events` (
 --
 
 INSERT INTO `events` (`id`, `club_id`, `title`, `description`, `event_date`, `status`, `created_by`, `created_at`) VALUES
-(1, 2, 'Hạm đội 1', 'Đá đê', '2025-03-08 00:00:00', 'approved', 6, '2025-02-26 17:30:12'),
-(2, 1, 'Giao Lưu FPT', 'Giao lưu vui vẻ', '2025-03-04 00:00:00', 'approved', 5, '2025-02-27 07:26:24');
+(1, 2, 'Hạm đội 1', 'Đá đê', '2025-03-08 08:30:00', 'approved', 6, '2025-02-26 17:30:12'),
+(2, 1, 'Giao Lưu FPT', 'Giao lưu vui vẻ', '2025-03-04 08:00:00', 'approved', 5, '2025-02-27 07:26:24'),
+(3, 2, 'Vinh Quang FBT', 'Vinh quang cho FBT', '2025-03-03 06:00:00', 'approved', 6, '2025-03-01 10:10:09'),
+(4, 3, 'Lương Sơn Bàn Truyện', 'Với sự tham gia của các nghệ nhân: Tiến Gầy, Tiến Béo, Labubu,...', '2025-03-23 08:15:00', 'approved', 10, '2025-03-03 02:14:21'),
+(5, 5, 'Đi Bơi', 'Bơi giao lưu vui vẻ giữa các thành viên', '2025-03-08 13:00:00', 'approved', 11, '2025-03-04 01:17:34');
 
 -- --------------------------------------------------------
 
@@ -155,10 +173,14 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VALUES
-(4, 'ADMIN', 'admin@gmail.com', '$2y$10$M.r/qCnNsgS7b9dvOCnHauxGAvkYgU3sJG.6IzdhPrnj6aJNMaIO.', 'admin', '2025-02-26 15:31:24'),
-(5, 'CLUB MANAGER', 'club@gmail.com', '$2y$10$zbNFr1SrJ0c7D0gw3maFiuvcyXbmIEr/9vpg7paEkveV7lPmsd88.', 'club_leader', '2025-02-26 15:31:54'),
-(6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'club_leader', '2025-02-26 15:32:04'),
-(7, 'John', 'john@gmail.com', '$2y$10$pX0Xz923LVEv0pj1Fiq59eQ3x0pyXQQCjhR3DToZt2e24uICB3Fkq', 'user', '2025-02-26 17:16:06');
+(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24'),
+(5, 'Trưởng CLB Siêu Cấp', 'club@gmail.com', '$2y$10$8NEz7k17kV26e.H4eTz5V.d67CKRBnwpYyMTyCg/VgUjFo5yu326q', 'club_leader', '2025-02-26 15:31:54'),
+(6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'user', '2025-02-26 15:32:04'),
+(7, 'John', 'john@gmail.com', '$2y$10$pX0Xz923LVEv0pj1Fiq59eQ3x0pyXQQCjhR3DToZt2e24uICB3Fkq', 'club_leader', '2025-02-26 17:16:06'),
+(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05'),
+(9, 'Thành Tiến', 'thanhtien@gmail.com', '$2y$10$22Wo0vkQ72JfZ4JFTj8VWuNQgl3LAt1/SUV1pkooMWRf6ruYaZMM6', 'user', '2025-03-01 10:05:24'),
+(10, 'Công', 'cong@gmail.com', '$2y$10$BYUzx2sft8jawlieUEOq5OhkjLAGG27m1R.RD2P5LLLHoE.P7n9Pm', 'club_leader', '2025-03-03 02:00:26'),
+(11, 'Phạm Lê Gia Hân', 'giahan@gmail.com', '$2y$10$6nOjI29BmN5aLq.ZV4CwBezxpYQB7InCHZbLeeiScjoeOTzQY1jgu', 'club_leader', '2025-03-04 01:15:32');
 
 --
 -- Indexes for dumped tables
@@ -217,37 +239,37 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `club_leaders`
 --
 ALTER TABLE `club_leaders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `club_members`
 --
 ALTER TABLE `club_members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
