@@ -17,6 +17,9 @@ $allowed_pages = [
     'events' => ['public' => true],
     'admin' => ['public' => false, 'admin' => true],
     'club_leader' => ['public' => false, 'club_leader' => true],
+    'club_leader/notifications' => ['public' => false, 'club_leader' => true],
+    'notifications' => ['public' => false], // Add notifications page for authenticated users
+    'notification_detail' => ['public' => false], // Add notification detail page
     'logout' => ['public' => false],
     'list_events' => ['public' => false, 'admin' => true],
     'list_clubs' => ['public' => false, 'admin' => true],
@@ -65,10 +68,15 @@ if ($page === 'admin' || $page === 'list_events' || $page === 'list_clubs') {
     renderHeader($page);
     
     // Include the requested page
+    // Update the page path resolution
     if (in_array($page, ['login', 'register', 'logout', 'profile'])) {
         $page_path = "pages/auth/{$page}.php";
     } elseif (in_array($page, ['about', 'support', 'contact'])) {
         $page_path = "pages/about/{$page}.php";
+    } elseif ($page === 'club_leader/notifications') {
+        $page_path = "pages/club_leader/notifications.php";
+    } elseif (in_array($page, ['notifications', 'notification_detail'])) {
+        $page_path = "pages/{$page}.php";
     } else {
         $page_path = "pages/{$page}.php";
     }

@@ -1,9 +1,10 @@
 <?php
 function renderHeader($page)
 {
-    ?>
+?>
     <!DOCTYPE html>
     <html lang="vi" class="h-100">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -203,6 +204,89 @@ function renderHeader($page)
                 transform: translateX(100%) rotate(45deg);
             }
 
+            /* Notification Styles */
+            .notification-content {
+                position: absolute;
+                top: 50px;
+                right: 10px;
+                background: white;
+                border: 1px solid #ccc;
+                padding: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 9999;
+                display: none;
+            }
+
+            .notification-content.active {
+                display: block;
+            }
+
+            .dropdown-menu {
+                border: none;
+                border-radius: var(--card-border-radius);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                padding: 0.5rem;
+                z-index: 9999;
+                /* Tăng z-index để hiển thị trên các phần tử khác */
+            }
+
+            /* Cải thiện dropdown thông báo */
+            #notificationsDropdown+.dropdown-menu {
+                z-index: 10000;
+                /* Z-index cao hơn các phần tử khác */
+                max-height: 400px;
+                overflow-y: auto;
+                width: 350px;
+                padding: 0;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+                border-radius: var(--card-border-radius);
+            }
+
+            #notificationsDropdown+.dropdown-menu .dropdown-item {
+                padding: 1rem;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                white-space: normal;
+            }
+
+            #notificationsDropdown+.dropdown-menu .dropdown-item:last-child {
+                border-bottom: none;
+            }
+
+            #notificationsDropdown+.dropdown-menu .dropdown-item.bg-light {
+                background-color: rgba(99, 102, 241, 0.08) !important;
+            }
+
+            #notificationsDropdown+.dropdown-menu .dropdown-item:hover {
+                background-color: rgba(99, 102, 241, 0.05);
+            }
+
+            .dropdown-item {
+                padding: 0.75rem 1rem;
+                border-radius: var(--border-radius);
+                transition: all var(--transition-speed) ease;
+                margin-bottom: 0.25rem;
+            }
+
+            .dropdown-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .dropdown-item:hover {
+                background-color: var(--background-color);
+                transform: translateY(-1px);
+            }
+
+            .dropdown-item.bg-light {
+                background-color: rgba(99, 102, 241, 0.1) !important;
+            }
+
+            .badge {
+                font-size: 0.65rem;
+                padding: 0.35em 0.65em;
+                margin-left: -0.5em;
+                margin-top: -0.5em;
+            }
+
             .btn-primary {
                 background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
                 border: none;
@@ -269,14 +353,16 @@ function renderHeader($page)
             }
 
             /* Form controls */
-            .form-control, .form-select {
+            .form-control,
+            .form-select {
                 border-radius: var(--border-radius);
                 padding: 0.75rem 1rem;
                 border: 1px solid #e2e8f0;
                 transition: all var(--transition-speed) ease;
             }
 
-            .form-control:focus, .form-select:focus {
+            .form-control:focus,
+            .form-select:focus {
                 border-color: var(--primary-light);
                 box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
             }
@@ -346,8 +432,13 @@ function renderHeader($page)
             }
 
             @keyframes dotPulse {
-                0% { transform: scale(1); }
-                100% { transform: scale(1.5); }
+                0% {
+                    transform: scale(1);
+                }
+
+                100% {
+                    transform: scale(1.5);
+                }
             }
 
             .footer-tagline {
@@ -378,7 +469,8 @@ function renderHeader($page)
                 text-decoration: none;
             }
 
-            .social-icon:hover, .social-hover {
+            .social-icon:hover,
+            .social-hover {
                 transform: translateY(-3px);
                 background: linear-gradient(45deg, var(--primary-light), var(--secondary-light));
                 box-shadow: 0 5px 15px rgba(244, 114, 182, 0.3);
@@ -479,14 +571,29 @@ function renderHeader($page)
             }
 
             @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
             @keyframes floatUpDown {
-                0% { transform: translateY(0); }
-                50% { transform: translateY(-10px); }
-                100% { transform: translateY(0); }
+                0% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-10px);
+                }
+
+                100% {
+                    transform: translateY(0);
+                }
             }
 
             /* Tablet & Mobile Adjustments */
@@ -495,7 +602,7 @@ function renderHeader($page)
                     margin: 0 0 10px 0;
                     border-radius: 0;
                 }
-                
+
                 .nav-link {
                     margin: 5px 0;
                 }
@@ -505,7 +612,7 @@ function renderHeader($page)
                 .footer-heading {
                     margin-top: 1.5rem;
                 }
-                
+
                 .footer-copyright p {
                     text-align: center !important;
                     margin-bottom: 0.5rem;
@@ -513,6 +620,7 @@ function renderHeader($page)
             }
         </style>
     </head>
+
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
@@ -532,31 +640,35 @@ function renderHeader($page)
                             <a class="nav-link <?php echo $page === 'events' ? 'active' : ''; ?>" href="index.php?page=events"><i class="bi bi-calendar-event me-1"></i>Sự Kiện</a>
                         </li>
                         <?php if (isAdmin()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo $page === 'admin' ? 'active' : ''; ?>" href="index.php?page=admin"><i class="bi bi-gear me-1"></i>Admin</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo $page === 'admin' ? 'active' : ''; ?>" href="index.php?page=admin"><i class="bi bi-gear me-1"></i>Admin</a>
+                            </li>
                         <?php endif; ?>
                         <?php if (isClubLeader()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo $page === 'club_leader' ? 'active' : ''; ?>" href="index.php?page=club_leader"><i class="bi bi-star me-1"></i>Quản Lý CLB</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo $page === 'club_leader' ? 'active' : ''; ?>" href="index.php?page=club_leader"><i class="bi bi-star me-1"></i>Quản Lý CLB</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                     <ul class="navbar-nav">
                         <?php if (isLoggedIn()): ?>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo $page === 'profile' ? 'active' : ''; ?>" href="index.php?page=profile"><i class="bi bi-person me-1"></i>Trang Cá Nhân</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php?page=logout"><i class="bi bi-box-arrow-right me-1"></i>Đăng Xuất</a>
-                        </li>
+                            <a class="nav-link position-relative" href="index.php?page=notifications">
+                                <i class="bi bi-bell me-1"></i>
+                            </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo $page === 'profile' ? 'active' : ''; ?>" href="index.php?page=profile"><i class="bi bi-person me-1"></i>Trang Cá Nhân</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.php?page=logout"><i class="bi bi-box-arrow-right me-1"></i>Đăng Xuất</a>
+                            </li>
                         <?php else: ?>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo $page === 'register' ? 'active' : ''; ?>" href="index.php?page=register"><i class="bi bi-person-plus me-1"></i>Đăng Ký</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?php echo $page === 'login' ? 'active' : ''; ?>" href="index.php?page=login"><i class="bi bi-box-arrow-in-right me-1"></i>Đăng Nhập</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo $page === 'register' ? 'active' : ''; ?>" href="index.php?page=register"><i class="bi bi-person-plus me-1"></i>Đăng Ký</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo $page === 'login' ? 'active' : ''; ?>" href="index.php?page=login"><i class="bi bi-box-arrow-in-right me-1"></i>Đăng Nhập</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </div>
@@ -574,12 +686,12 @@ function renderHeader($page)
                 echo '</div>';
             }
             ?>
-    <?php
-}
+        <?php
+    }
 
-function renderFooter()
-{
-    ?>
+    function renderFooter()
+    {
+        ?>
         </div>
 
         <footer class="footer">
@@ -590,7 +702,7 @@ function renderFooter()
                         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="wave-fill"></path>
                     </svg>
                 </div>
-                
+
                 <!-- Main Footer Content -->
                 <div class="footer-content">
                     <div class="row g-4 align-items-start">
@@ -610,7 +722,7 @@ function renderFooter()
                                 <a href="#" class="social-icon"><i class="bi bi-discord"></i></a>
                             </div>
                         </div>
-                        
+
                         <!-- Navigation Links -->
                         <div class="col-md-8">
                             <div class="row">
@@ -642,7 +754,7 @@ function renderFooter()
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Copyright Bar -->
                 <div class="footer-copyright">
                     <div class="row">
@@ -673,13 +785,17 @@ function renderFooter()
             $(document).ready(function() {
                 // Add fade-in animation to cards
                 $('.card').addClass('fade-in');
-                
+
                 // Add icons animation
                 $('.nav-link i').parent().hover(
-                    function() { $(this).find('i').addClass('animate__animated animate__tada'); },
-                    function() { $(this).find('i').removeClass('animate__animated animate__tada'); }
+                    function() {
+                        $(this).find('i').addClass('animate__animated animate__tada');
+                    },
+                    function() {
+                        $(this).find('i').removeClass('animate__animated animate__tada');
+                    }
                 );
-                
+
                 // Smooth scroll
                 $('a[href*="#"]').on('click', function(e) {
                     e.preventDefault();
@@ -696,12 +812,12 @@ function renderFooter()
                         $('.navbar').removeClass('shadow-sm');
                     }
                 });
-                
+
                 // Footer animation
                 $('.footer-brand-container').hover(function() {
                     $('.footer-brand-dot').toggleClass('pulse');
                 });
-                
+
                 // Social icons hover effect
                 $('.social-icon').hover(function() {
                     $(this).addClass('social-hover');
@@ -711,6 +827,7 @@ function renderFooter()
             });
         </script>
     </body>
+
     </html>
-    <?php
-}
+<?php
+    }
