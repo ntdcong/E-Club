@@ -18,11 +18,12 @@ $allowed_pages = [
     'admin' => ['public' => false, 'admin' => true],
     'club_leader' => ['public' => false, 'club_leader' => true],
     'club_leader/notifications' => ['public' => false, 'club_leader' => true],
-    'notifications' => ['public' => false], // Add notifications page for authenticated users
-    'notification_detail' => ['public' => false], // Add notification detail page
+    'notifications' => ['public' => false], 
+    'notification_detail' => ['public' => false], 
     'logout' => ['public' => false],
     'list_events' => ['public' => false, 'admin' => true],
     'list_clubs' => ['public' => false, 'admin' => true],
+    'upload_image' => ['public' => false, 'admin' => true],
     'about' => ['public' => true],
     'support' => ['public' => true],
     'contact' => ['public' => true]
@@ -56,13 +57,13 @@ if (isset($allowed_pages[$page]['club_leader']) && !isClubLeader()) {
 ob_start();
 
 // Render the appropriate layout based on the page type
-if ($page === 'admin' || $page === 'list_events' || $page === 'list_clubs') {
+if ($page === 'admin') {
     renderAdminHeader();
-    if ($page === 'admin') {
-        include "pages/admin.php";
-    } else {
-        include "pages/admin/{$page}.php";
-    }
+    include "pages/admin.php";
+    renderAdminFooter();
+} elseif (in_array($page, ['list_events', 'list_clubs', 'upload_image'])) {
+    renderAdminHeader();
+    include "pages/admin/{$page}.php";
     renderAdminFooter();
 } else {
     renderHeader($page);

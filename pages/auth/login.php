@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['email'] = $user['email'];
             $_SESSION['role'] = $user['role'];
 
-            flashMessage('Welcome back, ' . $user['name']);
+            flashMessage('Chào mừng quay trở lại, ' . $user['name']);
             switch ($user['role']) {
                 case 'admin':
                     redirect('/index.php?page=admin');

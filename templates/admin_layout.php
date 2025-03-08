@@ -129,6 +129,11 @@ function renderAdminHeader() {
                         <i class="bi bi-person-badge-fill me-2"></i> Quản lý trưởng CLB
                     </a>
                     
+                    <a class="nav-link <?php echo isset($_GET['action']) && $_GET['action'] === 'upload_image' ? 'active' : ''; ?>" 
+                       href="index.php?page=admin&action=upload_image">
+                        <i class="bi bi-image me-2"></i> Quản lý hình ảnh
+                    </a>
+                    
                     <div class="border-top my-4"></div>
                     
                     <a class="nav-link text-warning" href="index.php?page=home">

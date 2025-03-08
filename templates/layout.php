@@ -162,14 +162,13 @@ function renderHeader($page)
                 left: 0;
                 width: 4px;
                 height: 100%;
-                background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
                 z-index: 2;
                 opacity: 0;
                 transition: opacity var(--transition-speed) ease;
             }
 
             .card:hover {
-                box-shadow: 0 20px 30px rgba(99, 102, 241, 0.15);
+                box-shadow: 30px 20px 30px rgba(215, 99, 241, 0.15);
             }
 
             .card:hover::before {

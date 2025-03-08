@@ -80,14 +80,43 @@ if (isset($_GET['id'])) {
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0"><?php echo htmlspecialchars($club['name']); ?></h2>
+                </div>
                 <div class="card-body">
-                    <h2 class="card-title"><?php echo htmlspecialchars($club['name']); ?></h2>
-                    <p class="card-text"><?php echo nl2br(htmlspecialchars($club['description'])); ?></p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="badge bg-primary"><i class="bi bi-people"></i> <?php echo $club['member_count']; ?> Thành viên</span>
-                            <span class="badge bg-info"><i class="bi bi-calendar-event"></i> <?php echo $club['event_count']; ?> Sự kiện</span>
+                    <div class="club-info mb-4">
+                        <h4>Giới thiệu</h4>
+                        <p class="card-text"><?php echo nl2br(htmlspecialchars($club['description'])); ?></p>
+                    </div>
+                    
+                    <div class="club-stats mb-4">
+                        <h4>Thống kê</h4>
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded text-center">
+                                    <i class="bi bi-people fs-2"></i>
+                                    <h5 class="mt-2 mb-0"><?php echo $club['member_count']; ?></h5>
+                                    <small class="text-muted">Thành viên</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded text-center">
+                                    <i class="bi bi-calendar-event fs-2"></i>
+                                    <h5 class="mt-2 mb-0"><?php echo $club['event_count']; ?></h5>
+                                    <small class="text-muted">Sự kiện</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 border rounded text-center">
+                                    <i class="bi bi-trophy fs-2"></i>
+                                    <h5 class="mt-2 mb-0"><?php echo date('Y') - date('Y', strtotime($club['created_at'])); ?></h5>
+                                    <small class="text-muted">Năm hoạt động</small>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="club-actions d-flex justify-content-between align-items-center">
                         <?php if (isLoggedIn() && !isAdmin()): ?>
                             <?php if (!$is_member): ?>
                                 <form method="POST">
@@ -111,8 +140,8 @@ if (isset($_GET['id'])) {
             </div>
             
             <?php if (!empty($upcoming_events)): ?>
-            <div class="card">
-                <div class="card-header">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
                     <h3 class="card-title h5 mb-0"><i class="bi bi-calendar-week"></i> Sự kiện sắp tới</h3>
                 </div>
                 <div class="list-group list-group-flush">
@@ -120,15 +149,62 @@ if (isset($_GET['id'])) {
                     <a href="index.php?page=events&id=<?php echo $event['id']; ?>" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1"><?php echo htmlspecialchars($event['title']); ?></h5>
-                            <small><i class="bi bi-calendar3"></i> <?php echo date('d/m/Y', strtotime($event['event_date'])); ?></small>
+                            <small class="text-muted"><i class="bi bi-calendar3"></i> <?php echo date('d/m/Y', strtotime($event['event_date'])); ?></small>
                         </div>
-                        <p class="mb-1"><?php echo htmlspecialchars(substr($event['description'], 0, 100)) . '...'; ?></p>
-                        <small class="text-primary">Xem chi tiết <i class="bi bi-arrow-right"></i></small>
+                        <p class="mb-1"><?php echo htmlspecialchars(substr($event['description'], 0, 150)) . '...'; ?></p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-primary">Xem chi tiết <i class="bi bi-arrow-right"></i></small>
+                            <span class="badge bg-info"><i class="bi bi-clock"></i> <?php echo date('H:i', strtotime($event['event_date'])); ?></span>
+                        </div>
                     </a>
                     <?php endforeach; ?>
                 </div>
             </div>
             <?php endif; ?>
+
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title h5 mb-0"><i class="bi bi-people"></i> Thành viên câu lạc bộ</h3>
+                </div>
+                <div class="card-body">
+                    <?php
+                    $sql = "SELECT u.name, u.email, cm.joined_at, cm.status 
+                           FROM club_members cm 
+                           INNER JOIN users u ON cm.user_id = u.id 
+                           WHERE cm.club_id = ? AND cm.status = 'approved' 
+                           ORDER BY cm.joined_at DESC";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $club_id);
+                    $stmt->execute();
+                    $members = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+                    ?>
+
+                    <?php if (!empty($members)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tên thành viên</th>
+                                    <th>Ngày tham gia</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($members as $member): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($member['name']); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($member['joined_at'])); ?></td>
+                                    <td><span class="badge bg-success">Thành viên</span></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php else: ?>
+                    <p class="text-muted text-center mb-0">Chưa có thành viên nào tham gia câu lạc bộ.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
         
         <?php if (isAdmin($club['id'])): ?>
