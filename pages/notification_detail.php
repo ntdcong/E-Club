@@ -109,6 +109,10 @@ $related_notifications = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                                             <span class="text-primary"><?php echo htmlspecialchars($notification['sender_name']); ?></span>
                                         </p>
                                         <p class="mb-0">
+                                            <strong>Nội dung:</strong> 
+                                            <span class="text-success"><?php echo htmlspecialchars($notification['message']); ?></span>
+                                        </p>
+                                        <p class="mb-0">
                                             <strong>Câu lạc bộ:</strong> 
                                             <a href="index.php?page=club&id=<?php echo $notification['club_id']; ?>" class="text-decoration-none">
                                                 <?php echo htmlspecialchars($notification['club_name']); ?>

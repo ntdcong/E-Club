@@ -26,7 +26,11 @@ $allowed_pages = [
     'upload_image' => ['public' => false, 'admin' => true],
     'about' => ['public' => true],
     'support' => ['public' => true],
-    'contact' => ['public' => true]
+    'contact' => ['public' => true],
+    'privacy' => ['public' => true],
+    'terms' => ['public' => true],
+    'support' => ['public' => true],
+    'faq' => ['public' => true]
 ];
 
 // Check if the requested page exists and user has permission
@@ -72,7 +76,7 @@ if ($page === 'admin') {
     // Update the page path resolution
     if (in_array($page, ['login', 'register', 'logout', 'profile'])) {
         $page_path = "pages/auth/{$page}.php";
-    } elseif (in_array($page, ['about', 'support', 'contact'])) {
+    } elseif (in_array($page, ['about', 'support', 'contact', 'faq', 'privacy', 'terms'])) {
         $page_path = "pages/about/{$page}.php";
     } elseif ($page === 'club_leader/notifications') {
         $page_path = "pages/club_leader/notifications.php";

@@ -1,4 +1,7 @@
 <?php
+// Add this line at the top of the file to include the Cloudinary configuration
+require_once __DIR__ . '/../../config/cloudinary.php';
+
 // Handle club creation
 if ($action === 'create_club' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = sanitize($_POST['name']);
@@ -7,9 +10,20 @@ if ($action === 'create_club' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($name)) {
         flashMessage('Club name is required', 'danger');
     } else {
-        $sql = "INSERT INTO clubs (name, description) VALUES (?, ?)";
+        $image_url = null;
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $upload_result = uploadToCloudinary($_FILES['image'], 'clubs');
+            if ($upload_result['success']) {
+                $image_url = $upload_result['url'];
+            } else {
+                flashMessage('Failed to upload image: ' . $upload_result['error'], 'danger');
+                redirect('/index.php?page=admin&action=create_club');
+            }
+        }
+
+        $sql = "INSERT INTO clubs (name, description, image_url) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $name, $description);
+        $stmt->bind_param("sss", $name, $description, $image_url);
         
         if ($stmt->execute()) {
             flashMessage('Club created successfully');
@@ -30,9 +44,29 @@ if ($action === 'edit_club') {
         if (empty($name)) {
             flashMessage('Club name is required', 'danger');
         } else {
-            $sql = "UPDATE clubs SET name = ?, description = ? WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssi", $name, $description, $club_id);
+            $image_url = null;
+            $update_image = false;
+            
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $upload_result = uploadToCloudinary($_FILES['image'], 'clubs');
+                if ($upload_result['success']) {
+                    $image_url = $upload_result['url'];
+                    $update_image = true;
+                } else {
+                    flashMessage('Failed to upload image: ' . $upload_result['error'], 'danger');
+                    redirect('/index.php?page=admin&action=edit_club&id=' . $club_id);
+                }
+            }
+            
+            if ($update_image) {
+                $sql = "UPDATE clubs SET name = ?, description = ?, image_url = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssi", $name, $description, $image_url, $club_id);
+            } else {
+                $sql = "UPDATE clubs SET name = ?, description = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ssi", $name, $description, $club_id);
+            }
             
             if ($stmt->execute()) {
                 flashMessage('Club updated successfully');
@@ -113,7 +147,7 @@ if ($action === 'create_club'): ?>
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="index.php?page=admin&action=create_club">
+                    <form method="POST" action="index.php?page=admin&action=create_club" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="name" class="form-label">Tên CLB</label>
                             <input type="text" class="form-control" id="name" name="name" required>
@@ -122,8 +156,12 @@ if ($action === 'create_club'): ?>
                             <label for="description" class="form-label">Mô tả</label>
                             <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Hình ảnh CLB</label>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        </div>
                         <button type="submit" class="btn btn-primary">Tạo CLB</button>
-                        <a href="index.php?page=admin" class="btn btn-secondary">Hủy</a>
+                        <a href="index.php?page=list_clubs" class="btn btn-secondary">Hủy</a>
                     </form>
                 </div>
             </div>
@@ -139,7 +177,7 @@ if ($action === 'create_club'): ?>
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="index.php?page=admin&action=edit_club">
+                    <form method="POST" action="index.php?page=admin&action=edit_club" enctype="multipart/form-data">
                         <input type="hidden" name="club_id" value="<?php echo $club['id']; ?>">
                         <div class="mb-3">
                             <label for="name" class="form-label">Tên CLB</label>
@@ -149,8 +187,17 @@ if ($action === 'create_club'): ?>
                             <label for="description" class="form-label">Mô tả</label>
                             <textarea class="form-control" id="description" name="description" rows="4" required><?php echo htmlspecialchars($club['description']); ?></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Hình ảnh CLB</label>
+                            <?php if (!empty($club['image_url'])): ?>
+                                <div class="mb-2">
+                                    <img src="<?php echo htmlspecialchars($club['image_url']); ?>" alt="Club image" class="img-thumbnail" style="max-width: 200px;">
+                                </div>
+                            <?php endif; ?>
+                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        </div>
                         <button type="submit" class="btn btn-primary">Cập nhật CLB</button>
-                        <a href="index.php?page=clubs&id=<?php echo $club['id']; ?>" class="btn btn-secondary">Hủy</a>
+                        <a href="index.php?page=list_clubs" class="btn btn-secondary">Hủy</a>
                     </form>
                 </div>
             </div>

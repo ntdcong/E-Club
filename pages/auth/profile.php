@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../config/cloudinary.php';
 if (!isLoggedIn()) {
     flashMessage('Vui lòng đăng nhập để xem hồ sơ của bạn', 'warning');
     redirect('/index.php?page=login');
@@ -39,24 +40,52 @@ $upcoming_events = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $name = sanitize($_POST['name']);
     $email = sanitize($_POST['email']);
-    $new_password = trim($_POST['new_password']);
-    
+    $current_password = isset($_POST['current_password']) ? trim($_POST['current_password']) : '';
+    $new_password = isset($_POST['new_password']) ? trim($_POST['new_password']) : '';
+    $confirm_password = isset($_POST['confirm_password']) ? trim($_POST['confirm_password']) : '';
+    $avatar_url = $user['avatar_url'];
+    $error = false;
+
+    // Kiểm tra mật khẩu hiện tại nếu người dùng muốn đổi mật khẩu
     if ($new_password) {
-        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-        $sql = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssi", $name, $email, $hashed_password, $_SESSION['user_id']);
-    } else {
-        $sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssi", $name, $email, $_SESSION['user_id']);
+        if (!password_verify($current_password, $user['password'])) {
+            flashMessage('Mật khẩu hiện tại không chính xác', 'danger');
+            $error = true;
+        } elseif ($new_password !== $confirm_password) {
+            flashMessage('Mật khẩu mới và xác nhận mật khẩu không khớp', 'danger');
+            $error = true;
+        }
+    }
+
+    // Handle avatar upload
+    if (!$error && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+        $upload_result = uploadToCloudinary($_FILES['avatar'], 'avatars');
+        if ($upload_result['success']) {
+            $avatar_url = $upload_result['url'];
+        } else {
+            flashMessage('Không thể tải lên ảnh đại diện: ' . $upload_result['error'], 'danger');
+            $error = true;
+        }
     }
     
-    if ($stmt->execute()) {
-        flashMessage('Cập nhật hồ sơ thành công');
-        redirect('/index.php?page=profile');
-    } else {
-        flashMessage('Không thể cập nhật hồ sơ', 'danger');
+    if (!$error) {
+        if ($new_password) {
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $sql = "UPDATE users SET name = ?, email = ?, password = ?, avatar_url = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssi", $name, $email, $hashed_password, $avatar_url, $_SESSION['user_id']);
+        } else {
+            $sql = "UPDATE users SET name = ?, email = ?, avatar_url = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssi", $name, $email, $avatar_url, $_SESSION['user_id']);
+        }
+        
+        if ($stmt->execute()) {
+            flashMessage('Cập nhật hồ sơ thành công');
+            redirect('/index.php?page=profile');
+        } else {
+            flashMessage('Không thể cập nhật hồ sơ', 'danger');
+        }
     }
 }
 
@@ -276,6 +305,49 @@ function getStatusColor($status) {
         font-weight: 500;
     }
     
+    /* Avatar upload styles */
+    .avatar-upload {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .avatar-preview {
+        border: 4px solid rgba(37, 117, 252, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .avatar-preview:hover {
+        border-color: rgba(37, 117, 252, 0.4);
+    }
+
+    /* Upload progress bar */
+    .progress {
+        height: 10px;
+        margin-top: 10px;
+        display: none;
+    }
+    
+    /* Modal styles */
+    .modal-content {
+        border: none;
+        border-radius: 0.8rem;
+        overflow: hidden;
+    }
+    
+    .modal-header {
+        background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-bottom: none;
+    }
+    
+    .modal-title {
+        font-weight: 700;
+    }
+    
+    .modal-footer {
+        border-top: none;
+    }
+    
     /* Animation */
     @keyframes fadeInUp {
         from {
@@ -303,7 +375,13 @@ function getStatusColor($status) {
             <div class="card mb-4">
                 <div class="profile-header">
                     <div class="profile-avatar">
-                        <?php echo strtoupper(mb_substr($user['name'], 0, 1, 'UTF-8')); ?>
+                        <?php if (!empty($user['avatar_url'])): ?>
+                            <img src="<?php echo htmlspecialchars($user['avatar_url']); ?>" 
+                                 alt="<?php echo htmlspecialchars($user['name']); ?>" 
+                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        <?php else: ?>
+                            <?php echo strtoupper(mb_substr($user['name'], 0, 1, 'UTF-8')); ?>
+                        <?php endif; ?>
                     </div>
                     <div class="profile-info">
                         <h2><?php echo htmlspecialchars($user['name']); ?></h2>
@@ -311,30 +389,11 @@ function getStatusColor($status) {
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="name" class="form-label">Họ và tên</label>
-                                <input type="text" class="form-control" id="name" name="name" 
-                                       value="<?php echo htmlspecialchars($user['name']); ?>" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" 
-                                       value="<?php echo htmlspecialchars($user['email']); ?>" required>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="new_password" class="form-label">Mật khẩu mới</label>
-                                <input type="password" class="form-control" id="new_password" name="new_password" 
-                                       placeholder="Để trống nếu không thay đổi">
-                            </div>
-                        </div>
-                        <div class="text-end">
-                            <button type="submit" name="update_profile" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Cập Nhật Hồ Sơ
-                            </button>
-                        </div>
-                    </form>
+                    <div class="text-center mb-4">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateProfileModal">
+                            <i class="fas fa-edit me-2"></i>Cập Nhật Hồ Sơ
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -482,3 +541,175 @@ function getStatusColor($status) {
         </div>
     </div>
 </div>
+
+<!-- Modal cập nhật hồ sơ -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProfileModalLabel">Cập Nhật Hồ Sơ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" enctype="multipart/form-data" id="updateProfileForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 mb-4 text-center">
+                            <div class="avatar-upload">
+                                <img src="<?php echo !empty($user['avatar_url']) ? htmlspecialchars($user['avatar_url']) : 'https://via.placeholder.com/150'; ?>" 
+                                    class="rounded-circle avatar-preview" 
+                                    id="avatar-preview"
+                                    alt="<?php echo htmlspecialchars($user['name']); ?>" 
+                                    style="width: 150px; height: 150px; object-fit: cover;">
+                                <div class="mt-3">
+                                    <label for="avatar" class="btn btn-outline-primary">
+                                        <i class="fas fa-camera me-2"></i>Chọn ảnh đại diện
+                                    </label>
+                                    <input type="file" class="d-none" id="avatar" name="avatar" accept="image/*">
+                                </div>
+                                <div class="progress" id="upload-progress-container">
+                                    <div id="upload-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                value="<?php echo htmlspecialchars($user['name']); ?>" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <h5 class="mb-3">Đổi mật khẩu</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
+                            <div class="input-group">
+                                <input type="form" class="form-control" id="current_password" name="current_password">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="current_password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">Chỉ cần nhập khi bạn muốn đổi mật khẩu</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="new_password" class="form-label">Mật khẩu mới</label>
+                            <div class="input-group">
+                                <input type="form" class="form-control" id="new_password" name="new_password">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="new_password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="confirm_password" class="form-label">Xác nhận mật khẩu mới</label>
+                            <div class="input-group">
+                                <input type="form" class="form-control" id="confirm_password" name="confirm_password">
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="confirm_password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" name="update_profile" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Lưu Thay Đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Preview ảnh trước khi tải lên
+    const avatarInput = document.getElementById('avatar');
+    const avatarPreview = document.getElementById('avatar-preview');
+    const progressContainer = document.getElementById('upload-progress-container');
+    const progressBar = document.getElementById('upload-progress');
+    
+    avatarInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                avatarPreview.src = e.target.result;
+            }
+            
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+    
+    // Xử lý hiển thị/ẩn mật khẩu
+    const togglePasswordButtons = document.querySelectorAll('.toggle-password');
+    togglePasswordButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    });
+
+    // Xác thực form trước khi submit
+    const updateProfileForm = document.getElementById('updateProfileForm');
+    updateProfileForm.addEventListener('submit', function(e) {
+        const newPassword = document.getElementById('new_password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const currentPassword = document.getElementById('current_password').value;
+        
+        if (newPassword || confirmPassword || currentPassword) {
+            if (newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('Mật khẩu mới và xác nhận mật khẩu không khớp!');
+                return;
+            }
+            
+            if (!currentPassword) {
+                e.preventDefault();
+                alert('Vui lòng nhập mật khẩu hiện tại để thay đổi mật khẩu!');
+                return;
+            }
+        }
+    });
+
+    // Animation cho các phần tử khi trang tải xong
+    const fadeElements = document.querySelectorAll('.fade-in');
+    fadeElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+    });
+
+    setTimeout(() => {
+        fadeElements.forEach((element, index) => {
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, index * 100);
+        });
+    }, 100);
+});
+</script>

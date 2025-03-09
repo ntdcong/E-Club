@@ -49,8 +49,13 @@ function uploadToCloudinary($file, $folder = 'club_management') {
 // Hàm xóa ảnh khỏi Cloudinary
 function deleteFromCloudinary($public_id) {
     try {
-        $result = (new UploadApi())->destroy($public_id);
-        return ['success' => true, 'result' => $result];
+        $admin = new AdminApi();
+        $result = $admin->deleteAssets([$public_id]);
+        
+        return [
+            'success' => true,
+            'result' => $result
+        ];
     } catch (Exception $e) {
         return [
             'success' => false,

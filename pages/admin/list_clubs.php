@@ -60,10 +60,6 @@ $clubs = $result->fetch_all(MYSQLI_ASSOC);
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="index.php?page=admin&action=view_club_members&id=<?php echo $club['id']; ?>" 
-                                       class="btn btn-sm btn-outline-info">
-                                        <i class="bi bi-people"></i>
-                                    </a>
                                     <button type="button" 
                                             class="btn btn-sm btn-outline-danger" 
                                             onclick="confirmDelete(<?php echo $club['id']; ?>)">
