@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__ . '/../../config/send_email.php';
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = sanitize($_POST['name']);
     $email = sanitize($_POST['email']);
@@ -26,6 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bind_param("sss", $name, $email, $hashed_password);
 
             if ($stmt->execute()) {
+                // Gửi email chào mừng sau khi đăng ký thành công
+                if (function_exists('sendWelcomeEmail')) {
+                    sendWelcomeEmail($email, $name);
+                } else {
+                    // Log error or handle gracefully if email sending fails
+                    error_log("Warning: sendWelcomeEmail function is not defined");
+                }
+
                 flashMessage('Registration successful! Please login.');
                 redirect('/index.php?page=login');
             } else {
@@ -35,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 
 <div class="row justify-content-center">
     <div class="col-md-6">
