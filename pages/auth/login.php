@@ -22,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     redirect('/index.php?page=admin');
                     break;
                 case 'club_leader':
-                    if ($user['role'] === 'club_leader') {
-                        redirect('/index.php?page=club_leader');
-                    }
+                    redirect('/index.php?page=club_leader');
                     break;
+                case 'user':
                 default:
                     redirect('/index.php?page=home');
+                    break;
             }
         } else {
             flashMessage('Invalid password', 'danger');

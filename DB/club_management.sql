@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2025 at 10:58 AM
+-- Generation Time: Mar 11, 2025 at 03:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,18 +60,19 @@ CREATE TABLE `clubs` (
   `name` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('active','inactive') NOT NULL DEFAULT 'active'
+  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+  `image_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `clubs`
 --
 
-INSERT INTO `clubs` (`id`, `name`, `description`, `created_at`, `status`) VALUES
-(1, 'KARATE', 'Đam mê võ thuật bơi vào đây', '2025-02-26 15:36:19', 'active'),
-(2, 'BÓNG ĐÁ', 'Mê bóng thì vào', '2025-02-26 15:59:36', 'active'),
-(3, 'NHẠC KỊCH', 'Ca hát là đam mê, diễn xuất là thượng hạng.', '2025-02-27 07:23:19', 'active'),
-(5, 'Mạng Máy Tính', 'Chia sẻ đam mê với chuyên nghành mạng máy tính', '2025-03-04 01:16:25', 'active');
+INSERT INTO `clubs` (`id`, `name`, `description`, `created_at`, `status`, `image_url`) VALUES
+(1, 'KARATE', 'Đam mê võ thuật bơi vào đây', '2025-02-26 15:36:19', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490302/clubs/tpwzospwevjfybpx6ogl.jpg'),
+(2, 'BÓNG ĐÁ', 'Mê bóng thì vào', '2025-02-26 15:59:36', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490146/clubs/hbjw1sdnha2hskmach3k.jpg'),
+(3, 'NHẠC KỊCH', 'Ca hát là đam mê, diễn xuất là thượng hạng.', '2025-02-27 07:23:19', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490410/clubs/fzmavshxtcloynmaym8o.png'),
+(5, 'Mạng Máy Tính', 'Chia sẻ đam mê với chuyên nghành mạng máy tính', '2025-03-04 01:16:25', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490322/clubs/lwfhqai5ndmfql6xilzi.jpg');
 
 -- --------------------------------------------------------
 
@@ -156,6 +157,67 @@ INSERT INTO `events` (`id`, `club_id`, `title`, `description`, `event_date`, `st
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `club_id` int(11) DEFAULT NULL,
+  `sender_id` int(11) DEFAULT NULL,
+  `title` varchar(200) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `club_id`, `sender_id`, `title`, `message`, `created_at`) VALUES
+(2, 1, 5, 'Đi giao lưu võ thuật', 'Khu E có thách đấu chúng ta, hãy đi thôi', '2025-03-08 16:21:40'),
+(3, 5, 11, 'Mang Đồ Bơi', 'Đi bơi không thể thiếu đồ bơi đúng không nào, nhớ mang nhé !', '2025-03-08 16:40:21'),
+(5, 5, 11, 'HUỶ ĐI BƠI', 'Cuộc vui nào cũng có lúc tàn, nay nắng quá, ở nhà nha, đi đen lắm !', '2025-03-08 17:07:19'),
+(6, 2, 6, 'Tình Trạng', 'Tôi mệt quá', '2025-03-08 17:19:17'),
+(7, 1, 5, 'Lên Đồ', 'Mọi người lên đồ chuẩn bị đi giao lưu vào ngày mai.', '2025-03-09 03:43:35'),
+(8, 5, 11, 'Thi Đấu Cài Win', 'Câu lạc bộ Bảo Mật Mạng muốn so tài với chúng ta, chần chờ gì nữa mà không đi !', '2025-03-11 01:18:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notification_recipients`
+--
+
+CREATE TABLE `notification_recipients` (
+  `id` int(11) NOT NULL,
+  `notification_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `read_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notification_recipients`
+--
+
+INSERT INTO `notification_recipients` (`id`, `notification_id`, `user_id`, `is_read`, `read_at`) VALUES
+(1, 2, 6, 0, NULL),
+(2, 2, 8, 0, NULL),
+(3, 2, 9, 0, NULL),
+(4, 2, 7, 1, '2025-03-08 16:50:37'),
+(8, 3, 7, 1, '2025-03-08 16:50:22'),
+(10, 5, 7, 1, '2025-03-08 17:08:05'),
+(11, 6, 7, 1, '2025-03-08 17:19:24'),
+(12, 6, 8, 0, NULL),
+(13, 6, 9, 0, NULL),
+(14, 7, 6, 0, NULL),
+(15, 7, 8, 0, NULL),
+(16, 7, 9, 0, NULL),
+(17, 7, 7, 1, '2025-03-09 03:43:49'),
+(18, 8, 7, 1, '2025-03-11 01:18:50');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -165,22 +227,23 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','club_leader','user') DEFAULT 'user',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `avatar_url` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`) VALUES
-(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24'),
-(5, 'Trưởng CLB Siêu Cấp', 'club@gmail.com', '$2y$10$8NEz7k17kV26e.H4eTz5V.d67CKRBnwpYyMTyCg/VgUjFo5yu326q', 'club_leader', '2025-02-26 15:31:54'),
-(6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'user', '2025-02-26 15:32:04'),
-(7, 'John', 'john@gmail.com', '$2y$10$pX0Xz923LVEv0pj1Fiq59eQ3x0pyXQQCjhR3DToZt2e24uICB3Fkq', 'club_leader', '2025-02-26 17:16:06'),
-(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05'),
-(9, 'Thành Tiến', 'thanhtien@gmail.com', '$2y$10$22Wo0vkQ72JfZ4JFTj8VWuNQgl3LAt1/SUV1pkooMWRf6ruYaZMM6', 'user', '2025-03-01 10:05:24'),
-(10, 'Công', 'cong@gmail.com', '$2y$10$BYUzx2sft8jawlieUEOq5OhkjLAGG27m1R.RD2P5LLLHoE.P7n9Pm', 'club_leader', '2025-03-03 02:00:26'),
-(11, 'Phạm Lê Gia Hân', 'giahan@gmail.com', '$2y$10$6nOjI29BmN5aLq.ZV4CwBezxpYQB7InCHZbLeeiScjoeOTzQY1jgu', 'club_leader', '2025-03-04 01:15:32');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `avatar_url`) VALUES
+(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24', NULL),
+(5, 'Trưởng CLB Siêu Cấp', 'club@gmail.com', '$2y$10$8NEz7k17kV26e.H4eTz5V.d67CKRBnwpYyMTyCg/VgUjFo5yu326q', 'club_leader', '2025-02-26 15:31:54', NULL),
+(6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'user', '2025-02-26 15:32:04', NULL),
+(7, 'John Mikey', 'john@gmail.com', '$2y$10$78wvX6iwBPe9qgMVE7EiCuWmoqea3YbE3XL37OfZh2R8iA8AnrNFy', 'club_leader', '2025-02-26 17:16:06', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741495050/avatars/zajk92zkbb4n61huhx3v.jpg'),
+(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05', NULL),
+(9, 'Thành Tiến', 'thanhtien@gmail.com', '$2y$10$22Wo0vkQ72JfZ4JFTj8VWuNQgl3LAt1/SUV1pkooMWRf6ruYaZMM6', 'user', '2025-03-01 10:05:24', NULL),
+(10, 'Công', 'cong@gmail.com', '$2y$10$BYUzx2sft8jawlieUEOq5OhkjLAGG27m1R.RD2P5LLLHoE.P7n9Pm', 'club_leader', '2025-03-03 02:00:26', NULL),
+(11, 'Phạm Lê Gia Hân', 'giahan@gmail.com', '$2y$10$6nOjI29BmN5aLq.ZV4CwBezxpYQB7InCHZbLeeiScjoeOTzQY1jgu', 'club_leader', '2025-03-04 01:15:32', NULL);
 
 --
 -- Indexes for dumped tables
@@ -225,6 +288,22 @@ ALTER TABLE `events`
   ADD KEY `created_by` (`created_by`);
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `club_id` (`club_id`),
+  ADD KEY `sender_id` (`sender_id`);
+
+--
+-- Indexes for table `notification_recipients`
+--
+ALTER TABLE `notification_recipients`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notification_id` (`notification_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -266,6 +345,18 @@ ALTER TABLE `events`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `notification_recipients`
+--
+ALTER TABLE `notification_recipients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -302,6 +393,20 @@ ALTER TABLE `club_members`
 ALTER TABLE `events`
   ADD CONSTRAINT `events_ibfk_1` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `events_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `notification_recipients`
+--
+ALTER TABLE `notification_recipients`
+  ADD CONSTRAINT `notification_recipients_ibfk_1` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `notification_recipients_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

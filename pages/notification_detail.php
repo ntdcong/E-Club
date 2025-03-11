@@ -193,7 +193,7 @@ $related_notifications = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                         <a href="index.php?page=clubs&id=<?php echo $notification['club_id']; ?>" class="btn btn-outline-primary">
                             <i class="bi bi-people me-2"></i>Đến trang CLB
                         </a>
-                        <a href="index.php?page=events?club_id=<?php echo $notification['club_id']; ?>" class="btn btn-outline-info">
+                        <a href="index.php?page=events" class="btn btn-outline-info">
                             <i class="bi bi-calendar-event me-2"></i>Xem sự kiện của CLB
                         </a>
                         <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#contactModal">

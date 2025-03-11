@@ -39,7 +39,7 @@ function isAdmin() {
 
 // Add this function if it doesn't exist
 function isClubLeader() {
-    if (!isset($_SESSION['user_id']) || !isset($_SESSION['role'])) {
+    if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'club_leader') {
         return false;
     }
     

@@ -18,8 +18,10 @@ $allowed_pages = [
     'admin' => ['public' => false, 'admin' => true],
     'club_leader' => ['public' => false, 'club_leader' => true],
     'club_leader/notifications' => ['public' => false, 'club_leader' => true],
-    'notifications' => ['public' => false], 
-    'notification_detail' => ['public' => false], 
+    'club_leader/events' => ['public' => false, 'club_leader' => true],
+    'club_leader/members' => ['public' => false, 'club_leader' => true],
+    'notifications' => ['public' => false],
+    'notification_detail' => ['public' => false],
     'logout' => ['public' => false],
     'list_events' => ['public' => false, 'admin' => true],
     'list_clubs' => ['public' => false, 'admin' => true],
@@ -29,30 +31,33 @@ $allowed_pages = [
     'contact' => ['public' => true],
     'privacy' => ['public' => true],
     'terms' => ['public' => true],
-    'support' => ['public' => true],
     'faq' => ['public' => true]
 ];
 
-// Check if the requested page exists and user has permission
+// Check if the requested page exists
 if (!isset($allowed_pages[$page])) {
-    $page = 'home';
-}
-
-// Check access permissions
-if (!$allowed_pages[$page]['public'] && !isLoggedIn()) {
-    flashMessage('Vui lòng đăng nhập để truy cập trang này', 'error');
-    redirect('/index.php?page=login');
-    exit();
-}
-
-if (isset($allowed_pages[$page]['admin']) && !isAdmin()) {
-    flashMessage('Bạn không có quyền truy cập', 'error');
+    flashMessage('Trang không tồn tại', 'danger');
     redirect('/index.php');
     exit();
 }
 
+// Check login requirement
+if (!$allowed_pages[$page]['public'] && !isLoggedIn()) {
+    flashMessage('Vui lòng đăng nhập để truy cập trang này', 'warning');
+    redirect('/index.php?page=login');
+    exit();
+}
+
+// Check admin permission
+if (isset($allowed_pages[$page]['admin']) && !isAdmin()) {
+    flashMessage('Bạn không có quyền truy cập trang quản trị', 'danger');
+    redirect('/index.php');
+    exit();
+}
+
+// Check club leader permission
 if (isset($allowed_pages[$page]['club_leader']) && !isClubLeader()) {
-    flashMessage('Bạn không có quyền truy cập', 'error');
+    flashMessage('Bạn không có quyền truy cập trang quản lý CLB', 'danger');
     redirect('/index.php');
     exit();
 }
@@ -71,15 +76,15 @@ if ($page === 'admin') {
     renderAdminFooter();
 } else {
     renderHeader($page);
-    
-    // Include the requested page
     // Update the page path resolution
     if (in_array($page, ['login', 'register', 'logout', 'profile'])) {
         $page_path = "pages/auth/{$page}.php";
     } elseif (in_array($page, ['about', 'support', 'contact', 'faq', 'privacy', 'terms'])) {
         $page_path = "pages/about/{$page}.php";
-    } elseif ($page === 'club_leader/notifications') {
-        $page_path = "pages/club_leader/notifications.php";
+    } elseif (strpos($page, 'club_leader/') === 0) {
+        $page_path = "pages/{$page}.php";
+    } elseif ($page === 'club_leader') {
+        $page_path = "pages/club_leader/index.php";
     } elseif (in_array($page, ['notifications', 'notification_detail'])) {
         $page_path = "pages/{$page}.php";
     } else {

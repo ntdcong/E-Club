@@ -128,7 +128,7 @@ require_once __DIR__ . '/../../templates/layout.php';
                 <p class="text-muted mb-4">Bạn không tìm thấy câu trả lời cho câu hỏi của mình? Hãy liên hệ với đội ngũ hỗ trợ của chúng tôi.</p>
                 
                 <div class="d-grid gap-2">
-                    <a href="index.php?page=about&subpage=contact" class="btn btn-primary">
+                    <a href="index.php?page=contact" class="btn btn-primary">
                         <i class="bi bi-headset me-2"></i>Liên hệ hỗ trợ
                     </a>
                 </div>
