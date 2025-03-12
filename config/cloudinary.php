@@ -8,9 +8,9 @@ use Cloudinary\Api\Admin\AdminApi;
 // Cấu hình Cloudinary
 Configuration::instance([
     'cloud' => [
-        'cloud_name' => 'dsxpjcve6', // Thay bằng cloud_name thực tế
-        'api_key'    => '812194634798677',    // Thay bằng API key thực tế
-        'api_secret' => '9Xo7p-v8SSV_N7WzAQznhkIF-oA'  // Thay bằng API secret thực tế
+        'cloud_name' => '***', // Thay bằng cloud_name thực tế
+        'api_key'    => '***',    // Thay bằng API key thực tế
+        'api_secret' => '***'  // Thay bằng API secret thực tế
     ],
     'url' => [
         'secure' => true
