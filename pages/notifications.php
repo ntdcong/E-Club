@@ -15,7 +15,7 @@ if (isset($_GET['mark_read']) && is_numeric($_GET['mark_read'])) {
     $stmt->execute();
     
     // Add redirect to stay on the same page after marking as read
-    redirect("/index.php?page=notifications&marked=true");
+    redirect("index.php?page=notifications&marked=true");
 }
 
 // Mark all as read if requested

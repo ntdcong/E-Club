@@ -28,6 +28,12 @@ switch ($action) {
     case 'approve_event':
         require_once __DIR__ . '/events.php';
         break;
+    case 'manage_posts':
+        require_once __DIR__ . '/posts.php';
+        break;
+    case 'stats':
+        require_once __DIR__ . '/stats.php';
+        break;
     default:
         flashMessage('Đã có lỗi xảy ra', 'danger');
         redirect('/index.php?page=admin');

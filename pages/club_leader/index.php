@@ -32,7 +32,7 @@ $managed_clubs = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <style>
         body {
             background-color: #f5f6f8;
-            color: #2c3e50;
+            color: #2c3e50;     
             font-family: 'Segoe UI', sans-serif;
             line-height: 1.6;
         }
@@ -330,3 +330,10 @@ $managed_clubs = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="index.php?page=club_leader/posts" class="btn btn-primary">
+            <i class="bi bi-pencil-square"></i> Viết bài viết
+        </a>
+    </div>
+</div>

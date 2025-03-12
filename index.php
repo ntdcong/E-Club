@@ -15,16 +15,21 @@ $allowed_pages = [
     'clubs' => ['public' => true],
     'profile' => ['public' => false],
     'events' => ['public' => true],
+    'post_detail' => ['public' => true],
     'admin' => ['public' => false, 'admin' => true],
     'club_leader' => ['public' => false, 'club_leader' => true],
     'club_leader/notifications' => ['public' => false, 'club_leader' => true],
     'club_leader/events' => ['public' => false, 'club_leader' => true],
     'club_leader/members' => ['public' => false, 'club_leader' => true],
+    'club_leader/posts' => ['public' => false, 'club_leader' => true],
+    'club_leader/edit_post' => ['public' => false, 'club_leader' => true],
+    'admin/posts' => ['public' => false, 'admin' => true],
     'notifications' => ['public' => false],
     'notification_detail' => ['public' => false],
     'logout' => ['public' => false],
     'list_events' => ['public' => false, 'admin' => true],
     'list_clubs' => ['public' => false, 'admin' => true],
+    'admin/stats' => ['public' => false, 'admin' => true],
     'upload_image' => ['public' => false, 'admin' => true],
     'about' => ['public' => true],
     'support' => ['public' => true],
@@ -73,6 +78,14 @@ if ($page === 'admin') {
 } elseif (in_array($page, ['list_events', 'list_clubs', 'upload_image'])) {
     renderAdminHeader();
     include "pages/admin/{$page}.php";
+    renderAdminFooter();
+} elseif ($page === 'admin/posts') {  // Add this specific case
+    renderAdminHeader();
+    include "pages/admin/posts.php";
+    renderAdminFooter();
+} elseif ($page === 'admin/stats') {  // Add this specific case
+    renderAdminHeader();
+    include "pages/admin/stats.php";
     renderAdminFooter();
 } else {
     renderHeader($page);

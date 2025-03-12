@@ -162,6 +162,74 @@ if (isset($_GET['id'])) {
                         </div>
                     </div>
                 </div>
+
+                <!-- Club Posts Section -->
+                <?php
+                // Get approved posts for this club
+                $sql = "SELECT cp.*, u.name as author_name 
+                        FROM club_posts cp 
+                        JOIN users u ON cp.created_by = u.id 
+                        WHERE cp.club_id = ? AND cp.status = 'approved' 
+                        ORDER BY cp.created_at DESC LIMIT 6";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $club_id);
+                $stmt->execute();
+                $club_posts = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+                ?>
+
+                <?php if (!empty($club_posts)): ?>
+                <div class="card shadow-sm rounded-lg border-0 mb-4">
+                    <div class="card-header bg-primary text-white p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-newspaper fs-4 me-2"></i>
+                            <h3 class="card-title h5 mb-0 fw-bold">Bài viết mới nhất</h3>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <?php foreach ($club_posts as $post): ?>
+                            <div class="col-md-6">
+                                <div class="card h-100 border-0 shadow-sm hover-lift">
+                                    <?php if ($post['image_url']): ?>
+                                    <img src="<?php echo htmlspecialchars($post['image_url']); ?>" 
+                                         class="card-img-top" 
+                                         alt="<?php echo htmlspecialchars($post['title']); ?>" 
+                                         style="height: 200px; object-fit: cover;">
+                                    <?php endif; ?>
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3">
+                                            <a href="index.php?page=post_detail&id=<?php echo $post['id']; ?>" 
+                                               class="text-decoration-none text-dark">
+                                                <?php echo htmlspecialchars($post['title']); ?>
+                                            </a>
+                                        </h5>
+                                        <p class="card-text text-muted mb-3">
+                                            <?php echo htmlspecialchars(substr(strip_tags($post['content']), 0, 120)) . '...'; ?>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <small class="text-muted">
+                                                <i class="bi bi-person-circle me-1"></i>
+                                                <?php echo htmlspecialchars($post['author_name']); ?>
+                                            </small>
+                                            <small class="text-muted">
+                                                <i class="bi bi-calendar3 me-1"></i>
+                                                <?php echo date('d/m/Y', strtotime($post['created_at'])); ?>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-top-0 p-3">
+                                        <a href="index.php?page=post_detail&id=<?php echo $post['id']; ?>" 
+                                           class="btn btn-outline-primary btn-sm w-100">
+                                            Đọc thêm <i class="bi bi-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
                 
                 <?php if (!empty($upcoming_events)): ?>
                 <div class="card shadow-sm rounded-lg border-0 mb-4">
