@@ -79,25 +79,23 @@ $stmt->close();
 ?>
 
 <div class="container mt-4">
-    <h2>Manage Club Posts</h2>
-    
-    <!-- Create New Post Button -->
-    <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#postModal">
-        Create New Post
-    </button>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý Bài Viết Của CLB</h2>
+        <a href="index.php?page=club_leader/create_post" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Viết Bài Viết
+        </a>
+    </div>
 
     <!-- Posts List -->
     <div class="row row-cols-1 row-cols-md-2 g-4">
         <?php foreach ($posts as $post): ?>
         <div class="col">
-            <div class="card h-100">
+            <div class="card h-100 shadow-sm">
                 <?php if (isset($post['image_url']) && $post['image_url']): ?>
-                    <div class="card-img-top-wrapper" style="height: 200px; overflow: hidden;">
-                        <img src="<?php echo htmlspecialchars($post['image_url']); ?>" 
-                             class="card-img-top" 
-                             alt="Post image"
-                             style="object-fit: cover; height: 100%; width: 100%;">
-                    </div>
+                    <img src="<?php echo htmlspecialchars($post['image_url']); ?>" 
+                         class="card-img-top" 
+                         alt="Post image"
+                         style="object-fit: cover; height: 200px;">
                 <?php endif; ?>
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title"><?php echo htmlspecialchars($post['title']); ?></h5>
@@ -123,32 +121,33 @@ $stmt->close();
     <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="index.php?page=club_leader/posts" method="POST" enctype="multipart/form-data">
+                <form action="index.php?page=club_leader/posts" method="POST" enctype="multipart/form-data" id="postForm">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="postModalLabel">Create New Post</h5>
+                        <h5 class="modal-title" id="postModalLabel">Viết Bài Viết</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" name="action" value="create">
                         
                         <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
+                            <label for="title" class="form-label">Tiêu Đề</label>
                             <input type="text" class="form-control" id="title" name="title" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                            <label for="editor" class="form-label">Nội Dung</label>
+                            <div id="editor"></div>
+                            <textarea name="content" id="content" style="display: none"></textarea>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="image" class="form-label">Image</label>
+                            <label for="image" class="form-label">Hình Ảnh</label>
                             <input type="file" class="form-control" id="image" name="image" accept="image/*">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Post</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu Bài Viết</button>
                     </div>
                 </form>
             </div>
@@ -156,13 +155,28 @@ $stmt->close();
     </div>
 </div>
 
+<!-- Include CKEditor -->
+<script src="https://cdn.ckeditor.com/ckeditor5/35.0.1/classic/ckeditor.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    tinymce.init({
-        selector: '#content',
-        plugins: 'advlist autolink lists link image charmap preview anchor',
-        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | link image',
-        height: 300
+    let editor;
+    
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+            placeholder: 'Viết nội dung bài viết ở đây...'
+        })
+        .then(newEditor => {
+            editor = newEditor;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    // Update hidden textarea before form submission
+    document.getElementById('postForm').addEventListener('submit', function() {
+        document.getElementById('content').value = editor.getData();
     });
 });
 </script>

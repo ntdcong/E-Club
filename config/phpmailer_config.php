@@ -12,7 +12,7 @@ function configureMailer() {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'duycong2580@gmail.com';
-        $mail->Password = 'your_app_password'; 
+        $mail->Password = 'bfkr alnw rntj rkua'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';

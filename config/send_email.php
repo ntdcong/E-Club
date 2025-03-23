@@ -18,7 +18,7 @@ function sendWelcomeEmail($toEmail, $toName): bool|string
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        // Thiết lập thông tin người gửi
+        // Thiết lập thông tin người gửiS
         $mail->setFrom('duycong2580@gmail.com', 'E-Club');
         $mail->addAddress($toEmail, $toName);
 

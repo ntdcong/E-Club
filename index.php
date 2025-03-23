@@ -23,6 +23,7 @@ $allowed_pages = [
     'club_leader/members' => ['public' => false, 'club_leader' => true],
     'club_leader/posts' => ['public' => false, 'club_leader' => true],
     'club_leader/edit_post' => ['public' => false, 'club_leader' => true],
+    'club_leader/create_post' => ['public' => false, 'club_leader' => true],
     'admin/posts' => ['public' => false, 'admin' => true],
     'notifications' => ['public' => false],
     'notification_detail' => ['public' => false],
@@ -36,7 +37,8 @@ $allowed_pages = [
     'contact' => ['public' => true],
     'privacy' => ['public' => true],
     'terms' => ['public' => true],
-    'faq' => ['public' => true]
+    'faq' => ['public' => true],
+    'club_chat' => ['public' => false]
 ];
 
 // Check if the requested page exists
@@ -70,7 +72,6 @@ if (isset($allowed_pages[$page]['club_leader']) && !isClubLeader()) {
 // Buffer the output
 ob_start();
 
-// Render the appropriate layout based on the page type
 if ($page === 'admin') {
     renderAdminHeader();
     include "pages/admin.php";
@@ -79,17 +80,16 @@ if ($page === 'admin') {
     renderAdminHeader();
     include "pages/admin/{$page}.php";
     renderAdminFooter();
-} elseif ($page === 'admin/posts') {  // Add this specific case
+} elseif ($page === 'admin/posts') {  
     renderAdminHeader();
     include "pages/admin/posts.php";
     renderAdminFooter();
-} elseif ($page === 'admin/stats') {  // Add this specific case
+} elseif ($page === 'admin/stats') {  
     renderAdminHeader();
     include "pages/admin/stats.php";
     renderAdminFooter();
 } else {
     renderHeader($page);
-    // Update the page path resolution
     if (in_array($page, ['login', 'register', 'logout', 'profile'])) {
         $page_path = "pages/auth/{$page}.php";
     } elseif (in_array($page, ['about', 'support', 'contact', 'faq', 'privacy', 'terms'])) {

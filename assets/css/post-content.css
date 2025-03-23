@@ -1,0 +1,107 @@
+/* Post content styling */
+.post-content {
+    font-family: 'Nunito', sans-serif;
+    line-height: 1.6;
+    color: #1e293b;
+}
+
+/* Media embeds */
+.post-content figure.media {
+    margin: 1.5rem 0;
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+}
+
+.post-content figure.media iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+/* Tables */
+.post-content figure.table {
+    margin: 1.5rem 0;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.post-content table td,
+.post-content table th {
+    border: 1px solid #e2e8f0;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.post-content table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* Blockquotes */
+.post-content blockquote {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background-color: #f8fafc;
+    border-left: 4px solid #6366f1;
+    border-radius: 0.5rem;
+    font-style: italic;
+    color: #4a5568;
+}
+
+.post-content blockquote p {
+    margin: 0;
+}
+
+/* Lists */
+.post-content ul,
+.post-content ol {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+}
+
+.post-content li {
+    margin-bottom: 0.5rem;
+}
+
+/* Links */
+.post-content a {
+    color: #6366f1;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.post-content a:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
+/* Headings */
+.post-content h1 {
+    font-size: 2rem;
+    margin: 2rem 0 1rem;
+}
+
+.post-content h2 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0 1rem;
+}
+
+.post-content h3 {
+    font-size: 1.25rem;
+    margin: 1.25rem 0 0.75rem;
+}
+
+/* Paragraphs */
+.post-content p {
+    margin: 1rem 0;
+}

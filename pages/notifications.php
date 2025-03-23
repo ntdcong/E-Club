@@ -15,7 +15,7 @@ if (isset($_GET['mark_read']) && is_numeric($_GET['mark_read'])) {
     $stmt->execute();
     
     // Add redirect to stay on the same page after marking as read
-    redirect("index.php?page=notifications&marked=true");
+    redirect("/index.php?page=notifications&marked=true");
 }
 
 // Mark all as read if requested
@@ -27,7 +27,7 @@ if (isset($_GET['mark_all_read']) && $_GET['mark_all_read'] === 'true') {
     $stmt->bind_param("i", $_SESSION['user_id']);
     $stmt->execute();
     
-    redirect("index.php?page=notifications&all_marked=true");
+    redirect("/index.php?page=notifications&all_marked=true");
 }
 
 // Get user's notifications with pagination

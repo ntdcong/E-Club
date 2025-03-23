@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2025 at 01:37 PM
+-- Generation Time: Mar 23, 2025 at 07:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -127,8 +127,32 @@ INSERT INTO `club_members` (`id`, `user_id`, `club_id`, `status`, `joined_at`) V
 (10, 7, 5, 'approved', '2025-03-04 01:18:44'),
 (12, 12, 2, 'pending', '2025-03-11 04:14:18'),
 (13, 12, 3, 'pending', '2025-03-11 04:14:23'),
-(14, 12, 5, 'pending', '2025-03-11 04:14:26'),
+(14, 12, 5, 'approved', '2025-03-11 04:14:26'),
 (15, 12, 1, 'approved', '2025-03-11 04:18:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `club_messages`
+--
+
+CREATE TABLE `club_messages` (
+  `id` int(11) NOT NULL,
+  `club_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `club_messages`
+--
+
+INSERT INTO `club_messages` (`id`, `club_id`, `sender_id`, `message`, `created_at`) VALUES
+(1, 5, 12, 'Hi bạn', '2025-03-23 18:01:33'),
+(2, 5, 12, 'Hello bạn', '2025-03-23 18:03:01'),
+(3, 5, 7, 'Chào bạn', '2025-03-23 18:03:08'),
+(4, 1, 12, 'Này', '2025-03-23 18:23:06');
 
 -- --------------------------------------------------------
 
@@ -140,7 +164,7 @@ CREATE TABLE `club_posts` (
   `id` int(11) NOT NULL,
   `club_id` int(11) DEFAULT NULL,
   `title` varchar(200) NOT NULL,
-  `content` text NOT NULL,
+  `content` longtext NOT NULL,
   `image_url` varchar(255) DEFAULT NULL,
   `status` enum('pending','approved','rejected') DEFAULT 'pending',
   `created_by` int(11) DEFAULT NULL,
@@ -153,9 +177,11 @@ CREATE TABLE `club_posts` (
 --
 
 INSERT INTO `club_posts` (`id`, `club_id`, `title`, `content`, `image_url`, `status`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Đi ngủ', 'Tiến là một chàng trai trẻ với giấc ngủ \"tuyệt vời\" nhất thế gian. Ngày nào cũng vậy, cứ đến giờ đi ngủ là anh lại như một chiến binh bị mắc kẹt trong trận chiến sinh tử với chính chiếc giường của mình.\r\n\r\nMọi chuyện bắt đầu vào một buổi tối đẹp trời. Tiến quyết tâm ngủ sớm để sáng hôm sau thức dậy thật sảng khoái. Anh lên giường, quấn chăn thật chặt, tắt đèn, nhắm mắt... nhưng rồi 5 phút trôi qua, 10 phút, 30 phút, mắt vẫn mở trừng trừng như cú vọ. \"Không được! Phải ngủ!\" – anh tự nhủ.\r\n\r\nTiến bật dậy, lục tìm điện thoại, tra ngay \"Cách ngủ nhanh trong 2 phút\". Một bài viết khuyên anh hãy đếm cừu. \"Dễ ợt!\" – Tiến nghĩ. Thế là anh bắt đầu đếm: \"Một con cừu, hai con cừu, ba con cừu...\" Đến con thứ 100, anh bắt đầu tưởng tượng chúng đang mở party, nhảy múa trên đầu mình. Đến con thứ 200, cừu bắt đầu chơi DJ, bày tiệc nướng BBQ. Tiến mơ hồ nhận ra mình vừa tự biến giấc ngủ thành lễ hội. \"Thôi xong, càng đếm càng tỉnh!\"\r\n\r\nAnh chuyển sang phương án khác: nghe nhạc ru ngủ. Một tiếng suối chảy róc rách vang lên trong tai nghe, nhưng chưa kịp ngủ thì anh chợt thấy... mắc toilet. Thế là anh lồm cồm bò dậy, lết vào nhà vệ sinh. Vừa về đến giường, anh quấn chăn nằm xuống, chưa kịp nhắm mắt thì... khát nước. \"Trời ơi! Sao giờ này lại khát nước chứ!\" Anh lại lết ra bếp. Khi quay lại giường lần nữa, đồng hồ đã chỉ 2 giờ sáng. \"Ngủ, ngủ ngay!\" – Tiến tự ra lệnh cho mình.\r\n\r\nBất chợt, não anh lại nổi hứng \"review cuộc đời\". Những chuyện từ thuở bé bỗng dưng ùa về: ngày đầu tiên đi học bị té trước cổng trường, lần tỏ tình với crush mà nói lắp như bị lag, lần đi thi quên mang bút phải mượn của giám thị... Tiến trợn mắt nhìn lên trần nhà, lòng đầy cay đắng. \"Tại sao ký ức chỉ xuất hiện lúc này?!\"\r\n\r\nĐến 4 giờ sáng, trong cơn tuyệt vọng, Tiến lấy điện thoại ra lướt TikTok một chút cho dễ ngủ. Một video, hai video, ba video... đến khi anh bừng tỉnh nhìn đồng hồ thì trời đã sáng! Tiến hét lên trong tuyệt vọng: \"KHÔNGGGGG!!!\"\r\n\r\nVà thế là, như mọi ngày, Tiến đi làm với đôi mắt thâm quầng như gấu trúc, tự hứa với lòng mình: \"Tối nay nhất định sẽ ngủ sớm!\" Nhưng tất cả chúng ta đều biết... lịch sử sẽ lại lặp lại.', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490302/clubs/tpwzospwevjfybpx6ogl.jpg', 'approved', 5, '2025-03-11 14:57:08', '2025-03-12 12:24:44'),
+(1, 1, 'Đi ngủ', '<p><b>Tiến</b> là một chàng trai trẻ với giấc ngủ <i>\"tuyệt vời\"</i> nhất thế gian. Ngày nào cũng vậy, cứ đến giờ đi ngủ là anh lại như một chiến binh bị mắc kẹt trong trận chiến sinh tử với chính chiếc giường của mình.</p>\n\n    <blockquote>Mọi chuyện bắt đầu vào một buổi tối đẹp trời...</blockquote>\n\n    <p>Tiến bật dậy, lục tìm điện thoại, tra ngay <u>\"Cách ngủ nhanh trong 2 phút\"</u>. Một bài viết khuyên anh hãy đếm cừu.</p>\n\n    <ul>\n        <li>Một con cừu</li>\n        <li>Hai con cừu</li>\n        <li>Ba con cừu...</li>\n    </ul>\n\n    <p>Đến con thứ 100, anh bắt đầu tưởng tượng chúng đang mở party, nhảy múa trên đầu mình.</p>\n\n    <table border=\"1\">\n        <tr><th>Thời gian</th><th>Sự kiện</th></tr>\n        <tr><td>00:00</td><td>Lên giường ngủ</td></tr>\n        <tr><td>02:00</td><td>Vẫn chưa ngủ</td></tr>\n        <tr><td>04:00</td><td>Lướt TikTok</td></tr>\n        <tr><td>06:00</td><td>Trời đã sáng...</td></tr>\n    </table>\n\n    <p>Và thế là, như mọi ngày, Tiến đi làm với đôi mắt thâm quầng như gấu trúc...</p>', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490302/clubs/tpwzospwevjfybpx6ogl.jpg', 'approved', 5, '2025-03-11 14:57:08', '2025-03-19 13:03:51'),
 (3, 1, 'Pro là ai ?', 'Là tôi', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741779638/club_posts/atiyvoryllletvkjznz4.png', 'approved', 5, '2025-03-12 10:56:49', '2025-03-12 11:50:10'),
-(6, 1, 'oooooooo', 'iiiiiiiiiii aaaaaaaaaaaaaa', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741779585/club_posts/jab8ndigsovpysffiead.jpg', 'approved', 5, '2025-03-12 11:16:10', '2025-03-12 11:58:46');
+(6, 1, 'oooooooo', 'iiiiiiiiiii aaaaaaaaaaaaaa', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741779585/club_posts/jab8ndigsovpysffiead.jpg', 'approved', 5, '2025-03-12 11:16:10', '2025-03-12 11:58:46'),
+(11, 1, 'Mưa', '<p><b>Tiến</b> là một chàng trai trẻ với giấc ngủ <i>\"tuyệt vời\"</i> nhất thế gian. Ngày nào cũng vậy, cứ đến giờ đi ngủ là anh lại như một chiến binh bị mắc kẹt trong trận chiến sinh tử với chính chiếc giường của mình.</p>\n\n    <blockquote>Mọi chuyện bắt đầu vào một buổi tối đẹp trời...</blockquote>\n\n    <p>Tiến bật dậy, lục tìm điện thoại, tra ngay <u>\"Cách ngủ nhanh trong 2 phút\"</u>. Một bài viết khuyên anh hãy đếm cừu.</p>\n\n    <ul>\n        <li>Một con cừu</li>\n        <li>Hai con cừu</li>\n        <li>Ba con cừu...</li>\n    </ul>\n\n    <p>Đến con thứ 100, anh bắt đầu tưởng tượng chúng đang mở party, nhảy múa trên đầu mình.</p>\n\n    <table border=\"1\">\n        <tr><th>Thời gian</th><th>Sự kiện</th></tr>\n        <tr><td>00:00</td><td>Lên giường ngủ</td></tr>\n        <tr><td>02:00</td><td>Vẫn chưa ngủ</td></tr>\n        <tr><td>04:00</td><td>Lướt TikTok</td></tr>\n        <tr><td>06:00</td><td>Trời đã sáng...</td></tr>\n    </table>\n\n    <p>Và thế là, như mọi ngày, Tiến đi làm với đôi mắt thâm quầng như gấu trúc...</p>', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1742391765/club_posts/pkrdbqf04he8jfmh5ssa.jpg', 'approved', 5, '2025-03-19 13:42:47', '2025-03-19 13:43:55'),
+(12, 1, 'Nắng', '<h1>1 NĂM CÓ 4 MÙA</h1><p>Những nước khác thì</p><figure class=\"table\"><table><tbody><tr><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>Xuân</td><td>Hạ</td><td>Thu</td><td>Đông</td></tr></tbody></table></figure><p>Nhưng Việt Nam lại là:</p><figure class=\"table\"><table><tbody><tr><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>Mát</td><td>Cực Nóng</td><td>Nóng</td><td>Mát</td></tr></tbody></table></figure><ul><li>Vì sao ? Tra Google.</li><li>Sao tra Googl ? Tác giả không nhớ</li></ul><ol><li>Một</li><li>Hai</li><li>Ba</li></ol><p><a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">https://www.youtube.com/watch?v=dQw4w9WgXcQ</a></p><blockquote><p>Một nhà hiền triết đã không nói gì</p></blockquote><p>Tác giả: Hả Hả</p>', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1742392195/club_posts/vflli5uetegbnebjxr4d.png', 'approved', 5, '2025-03-19 13:49:35', '2025-03-19 13:50:23');
 
 -- --------------------------------------------------------
 
@@ -214,7 +240,8 @@ INSERT INTO `notifications` (`id`, `club_id`, `sender_id`, `title`, `message`, `
 (7, 1, 5, 'Lên Đồ', 'Mọi người lên đồ chuẩn bị đi giao lưu vào ngày mai.', '2025-03-09 03:43:35'),
 (8, 5, 11, 'Thi Đấu Cài Win', 'Câu lạc bộ Bảo Mật Mạng muốn so tài với chúng ta, chần chờ gì nữa mà không đi !', '2025-03-11 01:18:34'),
 (9, 1, 5, 'Đã lên thông tin sự kiện mới', 'Sự kiện mới bắt đầu mở đăng ký, hãy tham gia nào.', '2025-03-11 03:30:16'),
-(10, 5, 11, 'tesst', 'Hả hả, đã z', '2025-03-11 09:20:07');
+(10, 5, 11, 'tesst', 'Hả hả, đã z', '2025-03-11 09:20:07'),
+(11, 5, 11, 'Này hỡi các con dân, lắng nghe thông báo !', 'Ta sắp đi làm, cần tuyển đầu đàn mới, hình thức thông báo sau !', '2025-03-23 17:33:01');
 
 -- --------------------------------------------------------
 
@@ -253,7 +280,8 @@ INSERT INTO `notification_recipients` (`id`, `notification_id`, `user_id`, `is_r
 (20, 9, 8, 1, '2025-03-11 04:19:09'),
 (21, 9, 9, 1, '2025-03-11 04:22:21'),
 (22, 9, 7, 1, '2025-03-11 04:23:24'),
-(23, 10, 7, 1, '2025-03-11 09:20:16');
+(23, 10, 7, 1, '2025-03-11 09:20:16'),
+(24, 11, 7, 1, '2025-03-23 17:33:16');
 
 -- --------------------------------------------------------
 
@@ -268,26 +296,27 @@ CREATE TABLE `users` (
   `password` varchar(255) NOT NULL,
   `role` enum('admin','club_leader','user') DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `avatar_url` varchar(255) DEFAULT NULL
+  `avatar_url` varchar(255) DEFAULT NULL,
+  `last_activity` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `avatar_url`) VALUES
-(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24', NULL),
-(5, 'Trưởng CLB Siêu Cấp', 'club@gmail.com', '$2y$10$8NEz7k17kV26e.H4eTz5V.d67CKRBnwpYyMTyCg/VgUjFo5yu326q', 'club_leader', '2025-02-26 15:31:54', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741684737/avatars/ardolyp5eyhkyispa0qj.jpg'),
-(6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'user', '2025-02-26 15:32:04', NULL),
-(7, 'John Mikey', 'john@gmail.com', '$2y$10$78wvX6iwBPe9qgMVE7EiCuWmoqea3YbE3XL37OfZh2R8iA8AnrNFy', 'user', '2025-02-26 17:16:06', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741495050/avatars/zajk92zkbb4n61huhx3v.jpg'),
-(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05', NULL),
-(9, 'Thành Tiến', 'thanhtien@gmail.com', '$2y$10$22Wo0vkQ72JfZ4JFTj8VWuNQgl3LAt1/SUV1pkooMWRf6ruYaZMM6', 'user', '2025-03-01 10:05:24', NULL),
-(10, 'Công', 'cong@gmail.com', '$2y$10$BYUzx2sft8jawlieUEOq5OhkjLAGG27m1R.RD2P5LLLHoE.P7n9Pm', 'club_leader', '2025-03-03 02:00:26', NULL),
-(11, 'Phạm Lê Gia Hân', 'giahan@gmail.com', '$2y$10$6nOjI29BmN5aLq.ZV4CwBezxpYQB7InCHZbLeeiScjoeOTzQY1jgu', 'club_leader', '2025-03-04 01:15:32', NULL),
-(12, 'Hà Huy Chiến Thắng', 'chienthang@gmail.com', '$2y$10$kDR4FFyE81aJe1qpF2ki5.mJn6h/5Q1EJy5BECHbr8n5dzDADnEYK', 'user', '2025-03-11 04:13:59', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741666643/avatars/s5rarwf3hirot36fd8ot.jpg'),
-(17, 'Nguyễn Thành Duy Công', 'duycong2500@gmail.com', '$2y$10$Zg91CDq4RegsAGgbbvc07eqOhNmOhvxDauxy4twAgkXF7MDFVnC5K', 'user', '2025-03-11 09:18:24', NULL),
-(19, 'Tiến Loz', 'tiennestjs@gmail.com', '$2y$10$U1P9D8d8pYRC93wqC224AuKYp0S03MHmNT6Noc8gqj1/Y0ZX5Un/.', 'user', '2025-03-12 01:16:24', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741742311/avatars/vsxe1sqrhvcxozlhkjgk.jpg'),
-(20, 'DMM CC', 'phamhanst20@gmail.com', '$2y$10$0.dZX/Pb9W7kUeyc5.JAFeRICZd6mF94KWtZQEX8xMhiFLHbelHpW', 'user', '2025-03-12 03:38:52', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `avatar_url`, `last_activity`) VALUES
+(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24', NULL, '2025-03-23 18:00:06'),
+(5, 'Trưởng CLB Siêu Cấp', 'club@gmail.com', '$2y$10$8NEz7k17kV26e.H4eTz5V.d67CKRBnwpYyMTyCg/VgUjFo5yu326q', 'club_leader', '2025-02-26 15:31:54', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741684737/avatars/ardolyp5eyhkyispa0qj.jpg', '2025-03-23 18:00:06'),
+(6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'user', '2025-02-26 15:32:04', NULL, '2025-03-23 18:00:06'),
+(7, 'John Mikey', 'john@gmail.com', '$2y$10$78wvX6iwBPe9qgMVE7EiCuWmoqea3YbE3XL37OfZh2R8iA8AnrNFy', 'user', '2025-02-26 17:16:06', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741495050/avatars/zajk92zkbb4n61huhx3v.jpg', '2025-03-23 18:04:34'),
+(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05', NULL, '2025-03-23 18:00:06'),
+(9, 'Thành Tiến', 'thanhtien@gmail.com', '$2y$10$22Wo0vkQ72JfZ4JFTj8VWuNQgl3LAt1/SUV1pkooMWRf6ruYaZMM6', 'user', '2025-03-01 10:05:24', NULL, '2025-03-23 18:00:06'),
+(10, 'Công', 'cong@gmail.com', '$2y$10$BYUzx2sft8jawlieUEOq5OhkjLAGG27m1R.RD2P5LLLHoE.P7n9Pm', 'club_leader', '2025-03-03 02:00:26', NULL, '2025-03-23 18:00:06'),
+(11, 'Phạm Lê Gia Hân', 'giahan@gmail.com', '$2y$10$6nOjI29BmN5aLq.ZV4CwBezxpYQB7InCHZbLeeiScjoeOTzQY1jgu', 'club_leader', '2025-03-04 01:15:32', NULL, '2025-03-23 18:00:06'),
+(12, 'Hà Huy Chiến Thắng', 'chienthang@gmail.com', '$2y$10$kDR4FFyE81aJe1qpF2ki5.mJn6h/5Q1EJy5BECHbr8n5dzDADnEYK', 'user', '2025-03-11 04:13:59', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741666643/avatars/s5rarwf3hirot36fd8ot.jpg', '2025-03-23 18:24:20'),
+(17, 'Nguyễn Thành Duy Công', 'duycong2500@gmail.com', '$2y$10$Zg91CDq4RegsAGgbbvc07eqOhNmOhvxDauxy4twAgkXF7MDFVnC5K', 'user', '2025-03-11 09:18:24', NULL, '2025-03-23 18:00:06'),
+(19, 'Tiến Loz', 'tiennestjs@gmail.com', '$2y$10$U1P9D8d8pYRC93wqC224AuKYp0S03MHmNT6Noc8gqj1/Y0ZX5Un/.', 'user', '2025-03-12 01:16:24', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741742311/avatars/vsxe1sqrhvcxozlhkjgk.jpg', '2025-03-23 18:00:06'),
+(20, 'DMM CC', 'phamhanst20@gmail.com', '$2y$10$0.dZX/Pb9W7kUeyc5.JAFeRICZd6mF94KWtZQEX8xMhiFLHbelHpW', 'user', '2025-03-12 03:38:52', NULL, '2025-03-23 18:00:06');
 
 --
 -- Indexes for dumped tables
@@ -322,6 +351,14 @@ ALTER TABLE `club_members`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `club_id` (`club_id`);
+
+--
+-- Indexes for table `club_messages`
+--
+ALTER TABLE `club_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `club_id` (`club_id`),
+  ADD KEY `sender_id` (`sender_id`);
 
 --
 -- Indexes for table `club_posts`
@@ -393,10 +430,16 @@ ALTER TABLE `club_members`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `club_messages`
+--
+ALTER TABLE `club_messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `club_posts`
 --
 ALTER TABLE `club_posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `events`
@@ -408,13 +451,13 @@ ALTER TABLE `events`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `notification_recipients`
 --
 ALTER TABLE `notification_recipients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -446,6 +489,13 @@ ALTER TABLE `club_leaders`
 ALTER TABLE `club_members`
   ADD CONSTRAINT `club_members_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `club_members_ibfk_2` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `club_messages`
+--
+ALTER TABLE `club_messages`
+  ADD CONSTRAINT `club_messages_ibfk_1` FOREIGN KEY (`club_id`) REFERENCES `clubs` (`id`),
+  ADD CONSTRAINT `club_messages_ibfk_2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `club_posts`
