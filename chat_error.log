@@ -1,0 +1,21 @@
+[24-Mar-2025 07:19:39 Europe/Berlin] Chat error: Bạn không phải là thành viên của CLB này
+[24-Mar-2025 07:20:44 Europe/Berlin] Chat error: Unknown column 'c.logo' in 'field list'
+[24-Mar-2025 07:21:15 Europe/Berlin] Chat error: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM club_members cm 
+            JOIN clubs c ON cm.club_id = c.id 
+        ...' at line 2
+[24-Mar-2025 07:21:26 Europe/Berlin] Chat error: Bạn không phải là thành viên của CLB này
+[24-Mar-2025 07:36:02 Europe/Berlin] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\xampp\htdocs\club_management\pages\club_chat.php on line 8
+[24-Mar-2025 07:36:02 Europe/Berlin] PHP Warning:  require_once(db_connection.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\club_management\pages\club_chat.php on line 9
+[24-Mar-2025 07:36:02 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_connection.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\club_management\pages\club_chat.php:9
+Stack trace:
+#0 C:\xampp\htdocs\club_management\index.php(108): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\club_management\pages\club_chat.php on line 9
+[24-Mar-2025 07:36:19 Europe/Berlin] PHP Warning:  require_once(db_connection.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\club_management\pages\club_chat.php on line 8
+[24-Mar-2025 07:36:19 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'db_connection.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\club_management\pages\club_chat.php:8
+Stack trace:
+#0 C:\xampp\htdocs\club_management\index.php(108): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\club_management\pages\club_chat.php on line 8
+[29-Mar-2025 11:02:42 Europe/Berlin] Chat Error [403]: You are not a member of this club
+[29-Mar-2025 11:07:45 Europe/Berlin] Chat Error [403]: You are not a member of this club

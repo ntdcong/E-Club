@@ -133,6 +133,14 @@ foreach ($managed_clubs as $club) {
                                                     <span class="badge bg-warning">Chờ duyệt</span>
                                                 <?php endif; ?>
                                             </td>
+                                            <td>
+                                                <?php if ($event['status'] === 'approved'): ?>
+                                                    <a href="index.php?page=club_leader/event_attendance&event_id=<?php echo $event['id']; ?>" 
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-calendar-check me-1"></i>Điểm danh
+                                                    </a>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

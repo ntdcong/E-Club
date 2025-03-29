@@ -24,6 +24,7 @@ $allowed_pages = [
     'club_leader/posts' => ['public' => false, 'club_leader' => true],
     'club_leader/edit_post' => ['public' => false, 'club_leader' => true],
     'club_leader/create_post' => ['public' => false, 'club_leader' => true],
+    'club_leader/event_attendance' => ['public' => false, 'club_leader' => true],
     'admin/posts' => ['public' => false, 'admin' => true],
     'notifications' => ['public' => false],
     'notification_detail' => ['public' => false],
