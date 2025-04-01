@@ -5,7 +5,8 @@
         "mailersend/mailersend": "^0.30.0",
         "php-http/guzzle7-adapter": "^1.1",
         "nyholm/psr7": "^1.8",
-        "phpmailer/phpmailer": "^6.9"
+        "phpmailer/phpmailer": "^6.9",
+        "tttran/viet_qr_generator": "v0.6"
     },
     "config": {
         "allow-plugins": {

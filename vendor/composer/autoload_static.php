@@ -19,6 +19,10 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
     );
 
     public static $prefixLengthsPsr4 = array (
+        't' => 
+        array (
+            'tttran\\viet_qr_generator\\' => 25,
+        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -68,11 +72,23 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
             'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
         ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
+        ),
+        'D' => 
+        array (
+            'DASPRiD\\Enum\\' => 13,
+        ),
         'C' => 
         array (
             'Composer\\Pcre\\' => 14,
             'Complex\\' => 8,
             'Clue\\StreamFilter\\' => 18,
+        ),
+        'B' => 
+        array (
+            'BaconQrCode\\' => 12,
         ),
         'A' => 
         array (
@@ -81,6 +97,10 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
     );
 
     public static $prefixDirsPsr4 = array (
+        'tttran\\viet_qr_generator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/tttran/viet_qr_generator/src',
+        ),
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
@@ -184,6 +204,14 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
         ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qr-code/src',
+        ),
+        'DASPRiD\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dasprid/enum/src',
+        ),
         'Composer\\Pcre\\' => 
         array (
             0 => __DIR__ . '/..' . '/composer/pcre/src',
@@ -195,6 +223,10 @@ class ComposerStaticInit2b2371e62020873bfb28857c28cf7fef
         'Clue\\StreamFilter\\' => 
         array (
             0 => __DIR__ . '/..' . '/clue/stream-filter/src',
+        ),
+        'BaconQrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
         ),
         'Assert\\' => 
         array (

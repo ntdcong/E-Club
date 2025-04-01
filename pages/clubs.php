@@ -373,31 +373,31 @@ if (isset($_GET['id'])) {
             <div class="row g-4">
                 <?php foreach ($clubs as $club): ?>
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm rounded-lg border-0 hover-lift">
-                        <div class="position-relative">
+                    <div class="card h-100 shadow-sm rounded-lg border-0 hover-lift animate-fade-in">
+                        <div class="position-relative overflow-hidden">
                             <?php if (!empty($club['image_url'])): ?>
-                            <img src="<?php echo htmlspecialchars($club['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($club['name']); ?>" style="height: 160px; object-fit: cover;">
+                            <img src="<?php echo htmlspecialchars($club['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($club['name']); ?>" style="height: 180px; object-fit: cover; transition: transform 0.3s;">
                             <?php else: ?>
-                            <div class="bg-light text-center py-4" style="height: 160px;">
-                                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                            <div class="bg-gradient text-center py-4" style="height: 180px; background: linear-gradient(45deg, #f8f9fa, #e9ecef);">
+                                <i class="bi bi-image text-primary" style="font-size: 3.5rem; opacity: 0.7;"></i>
                             </div>
                             <?php endif; ?>
-                            <span class="position-absolute top-0 end-0 badge bg-primary m-2 rounded-pill px-3 py-2">
-                                <i class="bi bi-people me-1"></i> <?php echo $club['member_count']; ?>
+                            <span class="position-absolute top-0 end-0 badge bg-primary m-3 rounded-pill px-3 py-2 shadow-sm">
+                                <i class="bi bi-people-fill me-1"></i> <?php echo $club['member_count']; ?>
                             </span>
                         </div>
-                        <div class="card-body p-3">
-                            <h5 class="card-title fw-bold mb-2"><?php echo htmlspecialchars($club['name']); ?></h5>
-                            <p class="card-text text-muted mb-3" style="height: 4.5rem; overflow: hidden;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3 text-primary"><?php echo htmlspecialchars($club['name']); ?></h5>
+                            <p class="card-text text-muted mb-4" style="height: 4.5rem; overflow: hidden; line-height: 1.6;">
                                 <?php echo htmlspecialchars(substr($club['description'], 0, 120)) . '...'; ?>
                             </p>
-                            <div class="d-grid">
-                                <a href="index.php?page=clubs&id=<?php echo $club['id']; ?>" class="btn btn-outline-primary">
-                                    Xem chi tiết <i class="bi bi-arrow-right ms-1"></i>
+                            <div class="d-grid gap-2">
+                                <a href="index.php?page=clubs&id=<?php echo $club['id']; ?>" class="btn btn-outline-primary rounded-pill">
+                                    <i class="bi bi-info-circle me-2"></i>Xem chi tiết
                                 </a>
                             </div>
                         </div>
-                        <div class="card-footer bg-white border-top-0 text-muted small p-3">
+                        <div class="card-footer bg-white border-top-0 text-muted small p-3 d-flex align-items-center">
                             <i class="bi bi-calendar-check me-1"></i> Thành lập: <?php echo date('d/m/Y', strtotime($club['created_at'])); ?>
                         </div>
                     </div>

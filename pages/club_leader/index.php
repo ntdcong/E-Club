@@ -198,6 +198,26 @@ $managed_clubs = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             <i class="bi bi-speedometer2 me-2 text-primary"></i>
             Quản lý câu lạc bộ
         </h2>
+        <nav class="mt-3">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.php">
+                        <i class="bi bi-house-door me-1"></i> Trang chủ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="members.php">
+                        <i class="bi bi-people me-1"></i> Quản lý thành viên
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?page=club_leader/club_settings">
+                        <i class="bi bi-gear me-1"></i> Cài đặt CLB
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
         <p class="text-muted mb-0">Xem và quản lý thông tin các câu lạc bộ của bạn</p>
     </div>
 

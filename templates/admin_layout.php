@@ -13,7 +13,7 @@ function renderAdminHeader() {
         <title><?php echo APP_NAME; ?> - Quản trị</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-        <link href="/assets/css/post-content.css" rel="stylesheet">
+        <link href="<?php echo SITE_URL; ?>/assets/css/post-content.css" rel="stylesheet">
         <style>
             :root {
                 --primary-color: #4361ee;
@@ -125,6 +125,10 @@ function renderAdminHeader() {
                        href="index.php?page=admin&action=pending_events">
                         <i class="bi bi-calendar-check-fill me-2"></i> Duyệt sự kiện
                     </a>
+                    <a class="nav-link <?php echo isset($_GET['action']) && $_GET['action'] === 'manage_donations' ? 'active' : ''; ?>" 
+                       href="index.php?page=admin/donations">
+                        <i class="bi bi-heart-fill me-2"></i> Quản lý đóng góp
+                    </a>
                     <a class="nav-link <?php echo isset($_GET['action']) && $_GET['action'] === 'manage_leaders' ? 'active' : ''; ?>" 
                        href="index.php?page=admin&action=manage_leaders">
                         <i class="bi bi-person-badge-fill me-2"></i> Quản lý trưởng CLB
@@ -156,6 +160,8 @@ function renderAdminHeader() {
                                 echo 'Quản lý câu lạc bộ';
                             } elseif ($_GET['action'] === 'pending_events') {
                                 echo 'Duyệt sự kiện';
+                            } elseif ($_GET['action'] === 'manage_donations') {
+                                echo 'Quản lý đóng góp';
                             } elseif ($_GET['action'] === 'manage_leaders') {
                                 echo 'Quản lý trưởng CLB';
                             } else {

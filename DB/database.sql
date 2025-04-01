@@ -19,6 +19,7 @@ CREATE TABLE clubs (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     image_url VARCHAR(255),
+    bank_info JSON,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

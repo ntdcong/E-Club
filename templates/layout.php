@@ -15,7 +15,7 @@ function renderHeader($page)
         <!-- Additional Libraries -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-        <link href="/assets/css/post-content.css" rel="stylesheet">
+        <link href="assets/css/post-content.css" rel="stylesheet">
         <style>
             :root {
                 --primary-color: #6366f1;
@@ -652,6 +652,9 @@ function renderHeader($page)
                     </ul>
                     <ul class="navbar-nav">
                         <?php if (isLoggedIn()): ?>
+                            <li class="nav-item">
+                                <a class="nav-link <?php echo $page === 'donate' ? 'active' : ''; ?>" href="index.php?page=donate"><i class="bi bi-heart me-1"></i>Ủng Hộ CLB</a>
+                            </li>
                             <a class="nav-link position-relative" href="index.php?page=notifications">
                                 <i class="bi bi-bell me-1"></i>
                             </a>
