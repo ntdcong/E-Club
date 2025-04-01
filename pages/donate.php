@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 use tttran\viet_qr_generator\Generator;
 
 // Fetch clubs with bank information
-$clubs_query = "SELECT id, name, bank_info FROM clubs WHERE bank_info IS NOT NULL AND JSON_VALID(bank_info) = 1";
+$clubs_query = 'SELECT id, name, bank_info FROM clubs WHERE bank_info IS NOT NULL AND JSON_VALID(bank_info) = 1';
 $clubs_result = $conn->query($clubs_query);
 $clubs = $clubs_result->fetch_all(MYSQLI_ASSOC);
 
@@ -25,9 +25,9 @@ $error = '';
 
 // Get selected club information
 if (isset($_GET['club_id']) && !empty($_GET['club_id'])) {
-    $club_id = (int)$_GET['club_id'];
-    $stmt = $conn->prepare("SELECT id, name, bank_info FROM clubs WHERE id = ? AND bank_info IS NOT NULL");
-    $stmt->bind_param("i", $club_id);
+    $club_id = (int) $_GET['club_id'];
+    $stmt = $conn->prepare('SELECT id, name, bank_info FROM clubs WHERE id = ? AND bank_info IS NOT NULL');
+    $stmt->bind_param('i', $club_id);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
@@ -38,7 +38,7 @@ if (isset($_GET['club_id']) && !empty($_GET['club_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $club_id = isset($_POST['club_id']) ? (int)$_POST['club_id'] : 0;
+    $club_id = isset($_POST['club_id']) ? (int) $_POST['club_id'] : 0;
     $amount = isset($_POST['amount']) ? filter_var(str_replace(['.', ','], '', $_POST['amount']), FILTER_SANITIZE_NUMBER_INT) : 0;
     $message = isset($_POST['message']) ? trim(htmlspecialchars($_POST['message'])) : '';
     if ($club_id <= 0) {
@@ -46,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($amount <= 0) {
         $error = 'Vui lòng nhập số tiền hợp lệ';
     } else {
-        $stmt = $conn->prepare("SELECT id, name, bank_info FROM clubs WHERE id = ? AND bank_info IS NOT NULL");
-        $stmt->bind_param("i", $club_id);
+        $stmt = $conn->prepare('SELECT id, name, bank_info FROM clubs WHERE id = ? AND bank_info IS NOT NULL');
+        $stmt->bind_param('i', $club_id);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
@@ -57,10 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Định dạng thông tin tài khoản không hợp lệ';
             } else {
                 try {
-                    $transfer_content = "Ung ho CLB " . $selected_club['name'];
+                    $transaction_code = uniqid('DON_', true);
+                    $transfer_content = 'Đóng Góp CLB ' . $selected_club['name'];
                     if (!empty($message)) {
-                        $transfer_content .= ": " . $message;
+                        $transfer_content .= ': ' . $message;
                     }
+                    $transfer_content .= ' - ' . $transaction_code;
                     $gen = Generator::create()
                         ->bankId($bank_info['bank_name'])
                         ->accountNo($bank_info['account_number'])
@@ -76,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'club_id' => $club_id,
                             'amount' => $amount,
                             'message' => $message,
-                            'transaction_code' => uniqid('DON_', true),
+                            'transaction_code' => $transaction_code,
                             'created_at' => date('Y-m-d H:i:s'),
                             'qr_code' => $qr_code
                         ];
@@ -98,12 +100,18 @@ $formatted_amount = '';
 if (!empty($amount) && is_numeric($amount)) {
     $formatted_amount = number_format($amount, 0, ',', '.');
 }
+
+require_once __DIR__ . '/../templates/layout.php';
 ?>
 
-<div class="container">
+<div class="donate-page">
     <div class="content-wrapper">
         <h1 class="title">Ủng hộ Câu lạc bộ</h1>
-
+        <div class="text-center py-3 border-top">
+            <a href="index.php?page=my_donations" class="btn btn-primary">
+                <i class="bi bi-clock-fill me-2"></i>Lịch Sử Đóng Góp
+            </a>
+        </div>
         <?php if (empty($clubs)): ?>
             <div class="empty-state">
                 <p>Hiện tại chưa có CLB nào có thông tin tài khoản để nhận đóng góp.</p>
@@ -171,6 +179,9 @@ if (!empty($amount) && is_numeric($amount)) {
                             <div class="qr-header">
                                 <span class="qr-club">CLB <?php echo htmlspecialchars($selected_club['name']); ?></span>
                                 <span class="qr-amount"><?php echo number_format($amount, 0, ',', '.'); ?> VNĐ</span>
+                                <?php if (isset($_SESSION['pending_donation'])): ?>
+                                <span class="qr-transaction-code">Mã GD: <?php echo $_SESSION['pending_donation']['transaction_code']; ?></span>
+                                <?php endif; ?>
                             </div>
                             <img src="<?php echo $qr_code; ?>" alt="QR Code" class="qr-image">
                             <div class="qr-actions">
@@ -192,7 +203,7 @@ if (!empty($amount) && is_numeric($amount)) {
     <!-- Modal xác nhận -->
     <div class="modal fade" id="confirmDonationModal" tabindex="-1" aria-labelledby="confirmDonationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content donation-modal">
                 <div class="modal-header">
                     <h5 class="modal-title" id="confirmDonationModalLabel">Xác nhận đóng góp</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -203,6 +214,7 @@ if (!empty($amount) && is_numeric($amount)) {
                         <div><strong>CLB:</strong> <span id="modalClubName"></span></div>
                         <div><strong>Số tiền:</strong> <span id="modalAmount"></span></div>
                         <div><strong>Lời nhắn:</strong> <span id="modalMessage"></span></div>
+                        <div><strong>Mã giao dịch:</strong> <span id="modalTransactionCode"></span></div>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="confirmTransferCheck" required>
@@ -228,27 +240,22 @@ if (!empty($amount) && is_numeric($amount)) {
         --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
-    body {
+    .donate-page {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         color: var(--text);
-        background: #f5f6f8;
-        line-height: 1.6;
-    }
-
-    .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 2rem;
     }
 
-    .content-wrapper {
+    .donate-page .content-wrapper {
         background: white;
         border-radius: 12px;
         box-shadow: var(--shadow);
         padding: 2rem;
     }
 
-    .title {
+    .donate-page .title {
         font-size: 1.75rem;
         font-weight: 600;
         margin-bottom: 2rem;
@@ -256,27 +263,27 @@ if (!empty($amount) && is_numeric($amount)) {
         color: var(--text);
     }
 
-    .grid {
+    .donate-page .grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
     }
 
-    .form-section,
-    .qr-section {
+    .donate-page .form-section,
+    .donate-page .qr-section {
         padding: 1rem;
     }
 
-    .label {
+    .donate-page .label {
         display: block;
         font-weight: 500;
         margin-bottom: 0.5rem;
         color: var(--text);
     }
 
-    .select,
-    .input,
-    .textarea {
+    .donate-page .select,
+    .donate-page .input,
+    .donate-page .textarea {
         width: 100%;
         padding: 0.75rem;
         border: 1px solid var(--border);
@@ -287,20 +294,20 @@ if (!empty($amount) && is_numeric($amount)) {
         transition: border-color 0.2s;
     }
 
-    .select:focus,
-    .input:focus,
-    .textarea:focus {
+    .donate-page .select:focus,
+    .donate-page .input:focus,
+    .donate-page .textarea:focus {
         outline: none;
         border-color: var(--primary);
         box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.2);
     }
 
-    .textarea {
+    .donate-page .textarea {
         min-height: 100px;
         resize: vertical;
     }
 
-    .button {
+    .donate-page .button {
         display: inline-block;
         padding: 0.75rem 1.5rem;
         border-radius: 8px;
@@ -310,69 +317,69 @@ if (!empty($amount) && is_numeric($amount)) {
         transition: all 0.2s;
     }
 
-    .button--primary {
+    .donate-page .button--primary {
         background: var(--primary);
         color: white;
         border: none;
     }
 
-    .button--primary:hover {
+    .donate-page .button--primary:hover {
         background: #5448d8;
     }
 
-    .button--secondary {
+    .donate-page .button--secondary {
         background: var(--secondary);
         color: var(--text);
         border: 1px solid var(--border);
     }
 
-    .button--secondary:hover {
+    .donate-page .button--secondary:hover {
         background: #ebedf0;
     }
 
-    .button--select {
+    .donate-page .button--select {
         margin-top: 1rem;
         width: 100%;
     }
 
-    .bank-details {
+    .donate-page .bank-details {
         margin-top: 2rem;
         padding: 1.5rem;
         background: var(--secondary);
         border-radius: 8px;
     }
 
-    .subtitle {
+    .donate-page .subtitle {
         font-size: 1.25rem;
         font-weight: 500;
         margin-bottom: 1rem;
     }
 
-    .detail-item {
+    .donate-page .detail-item {
         margin-bottom: 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .detail-item .label {
+    .donate-page .detail-item .label {
         font-weight: 500;
         color: var(--text-muted);
     }
 
-    .bank-name {
+    .donate-page .bank-name {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    .account-number {
+    .donate-page .account-number {
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
 
-    .copy-button {
+    .donate-page .copy-button {
         background: none;
         border: none;
         color: var(--primary);
@@ -380,7 +387,7 @@ if (!empty($amount) && is_numeric($amount)) {
         cursor: pointer;
     }
 
-    .qr-container {
+    .donate-page .qr-container {
         text-align: center;
         padding: 2rem;
         background: white;
@@ -388,41 +395,48 @@ if (!empty($amount) && is_numeric($amount)) {
         box-shadow: var(--shadow);
     }
 
-    .qr-header {
+    .donate-page .qr-header {
         margin-bottom: 1.5rem;
     }
 
-    .qr-club {
+    .donate-page .qr-club {
         display: block;
         font-size: 1.125rem;
         color: var(--text-muted);
     }
 
-    .qr-amount {
+    .donate-page .qr-amount {
         font-size: 1.5rem;
         font-weight: 600;
         color: var(--text);
     }
 
-    .qr-image {
+    .donate-page .qr-transaction-code {
+        display: block;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-top: 5px;
+    }
+
+    .donate-page .qr-image {
         max-width: 240px;
         margin: 0 auto 1.5rem;
         border-radius: 8px;
     }
 
-    .qr-actions {
+    .donate-page .qr-actions {
         display: flex;
         gap: 1rem;
         justify-content: center;
         margin-bottom: 1rem;
     }
 
-    .qr-info {
+    .donate-page .qr-info {
         font-size: 0.875rem;
         color: var(--text-muted);
     }
 
-    .qr-placeholder {
+    .donate-page .qr-placeholder {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -433,7 +447,7 @@ if (!empty($amount) && is_numeric($amount)) {
         text-align: center;
     }
 
-    .error-message {
+    .donate-page .error-message {
         background: #fef2f2;
         color: #dc2626;
         padding: 1rem;
@@ -441,51 +455,51 @@ if (!empty($amount) && is_numeric($amount)) {
         margin-bottom: 1.5rem;
     }
 
-    .empty-state {
+    .donate-page .empty-state {
         text-align: center;
         padding: 2rem;
         color: var(--text-muted);
     }
 
-    .modal-content {
+    .donate-page .donation-modal {
         border-radius: 12px;
         border: none;
     }
 
-    .modal-header {
+    .donate-page .donation-modal .modal-header {
         border-bottom: none;
         padding: 1.5rem 1.5rem 0;
     }
 
-    .modal-title {
+    .donate-page .donation-modal .modal-title {
         font-weight: 600;
     }
 
-    .modal-body {
+    .donate-page .donation-modal .modal-body {
         padding: 1.5rem;
     }
 
-    .modal-note {
+    .donate-page .donation-modal .modal-note {
         color: var(--text-muted);
         margin-bottom: 1rem;
     }
 
-    .modal-details {
+    .donate-page .donation-modal .modal-details {
         margin-bottom: 1.5rem;
     }
 
-    .modal-details div {
+    .donate-page .donation-modal .modal-details div {
         margin-bottom: 0.5rem;
     }
 
-    .modal-footer {
+    .donate-page .donation-modal .modal-footer {
         border-top: none;
         padding: 0 1.5rem 1.5rem;
         gap: 0.5rem;
     }
 
     @media (max-width: 768px) {
-        .grid {
+        .donate-page .grid {
             grid-template-columns: 1fr;
         }
     }
@@ -511,6 +525,11 @@ if (!empty($amount) && is_numeric($amount)) {
                 const clubName = clubSelect.options[clubSelect.selectedIndex].text;
                 const amount = document.getElementById('amount').value;
                 const message = document.getElementById('message').value;
+                
+                <?php if (isset($_SESSION['pending_donation'])): ?>
+                const transactionCode = "<?php echo $_SESSION['pending_donation']['transaction_code']; ?>";
+                document.getElementById('modalTransactionCode').textContent = transactionCode;
+                <?php endif; ?>
 
                 document.getElementById('modalClubName').textContent = clubName;
                 document.getElementById('modalAmount').textContent = amount + ' VNĐ';

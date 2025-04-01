@@ -71,7 +71,7 @@ require_once __DIR__ . '/../templates/layout.php';
                         </div>
                     </div>
                     
-                    <a href="/index.php?page=my_donations" class="btn btn-primary">
+                    <a href="index.php?page=my_donations" class="btn btn-primary">
                         <i class="bi bi-list-ul me-2"></i>Xem lịch sử đóng góp
                     </a>
                 </div>

@@ -1,4 +1,7 @@
 <?php
+// Thiết lập múi giờ Việt Nam
+date_default_timezone_set('Asia/Ho_Chi_Minh');
+
 // Database configuration
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');

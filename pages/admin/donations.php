@@ -23,7 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['donation_id']) && iss
             // Nếu cập nhật thành công và trạng thái là completed, gửi thông báo cho người dùng
             if ($status === 'completed') {
                 // Lấy thông tin donation
-                $get_donation = "SELECT d.*, u.id as user_id FROM donations d LEFT JOIN users u ON d.user_id = u.id WHERE d.id = ?";
+                $get_donation = "SELECT d.*, u.id as user_id, c.name as club_name FROM donations d 
+                                LEFT JOIN users u ON d.user_id = u.id 
+                                LEFT JOIN clubs c ON d.club_id = c.id
+                                WHERE d.id = ?";
                 $stmt = $conn->prepare($get_donation);
                 $stmt->bind_param("i", $donation_id);
                 $stmt->execute();
@@ -34,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['donation_id']) && iss
                     $notification_query = "INSERT INTO notifications (title, message, club_id, sender_id) VALUES (?, ?, ?, ?)";
                     $stmt = $conn->prepare($notification_query);
                     $title = "Xác nhận đóng góp";
-                    $message = "Khoản đóng góp của bạn đã được xác nhận. Cảm ơn bạn đã ủng hộ!";
+                    $message = "Khoản đóng góp của bạn cho CLB " . $donation['club_name'] . " đã được xác nhận. Cảm ơn bạn đã ủng hộ!";
                     $stmt->bind_param("ssii", $title, $message, $donation['club_id'], $_SESSION['user_id']);
                     $stmt->execute();
                     
@@ -55,13 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['donation_id']) && iss
     exit;
 }
 
-// Lấy danh sách các khoản đóng góp
-$query = "SELECT d.*, u.name as donor_name, u.email as donor_email 
+// Admin xem tất cả các khoản đóng góp
+$query = "SELECT d.*, u.name as donor_name, u.email as donor_email, c.name as club_name
           FROM donations d 
           LEFT JOIN users u ON d.user_id = u.id 
+          LEFT JOIN clubs c ON d.club_id = c.id
           ORDER BY d.created_at DESC";
 $result = $conn->query($query);
-$donations = $result->fetch_all(MYSQLI_ASSOC);
+$donations = [];
+while ($row = $result->fetch_assoc()) {
+    $donations[] = $row;
+}
 ?>
 
 <div class="container-fluid py-4">
@@ -99,6 +106,7 @@ $donations = $result->fetch_all(MYSQLI_ASSOC);
                         <tr>
                             <th>ID</th>
                             <th>Người đóng góp</th>
+                            <th>CLB</th>
                             <th>Số tiền</th>
                             <th>Lời nhắn</th>
                             <th>Mã giao dịch</th>
@@ -119,6 +127,9 @@ $donations = $result->fetch_all(MYSQLI_ASSOC);
                                     <?php else: ?>
                                         <span class="text-muted">Ẩn danh</span>
                                     <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php echo htmlspecialchars($donation['club_name']); ?>
                                 </td>
                                 <td class="text-end">
                                     <?php echo number_format($donation['amount'], 0, ',', '.'); ?> VNĐ
@@ -196,7 +207,7 @@ $donations = $result->fetch_all(MYSQLI_ASSOC);
                         
                         <?php if (empty($donations)): ?>
                             <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">
+                                <td colspan="9" class="text-center py-4 text-muted">
                                     <i class="bi bi-inbox h4 d-block"></i>
                                     Chưa có khoản đóng góp nào
                                 </td>
