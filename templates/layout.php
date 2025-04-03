@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../config.php';
-
 function renderHeader($page)
 {
 ?>
@@ -17,7 +15,7 @@ function renderHeader($page)
         <!-- Additional Libraries -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-        <link href="assets/css/post-content.css" rel="stylesheet">
+        <link href="/assets/css/post-content.css" rel="stylesheet">
         <style>
             :root {
                 --primary-color: #6366f1;
@@ -29,7 +27,7 @@ function renderHeader($page)
                 --success-color: #10b981;
                 --warning-color: #f59e0b;
                 --danger-color: #ef4444;
-                --background-color: rgba(255, 255, 255, 0.21);
+                --background-color: #f8fafc;
                 --text-color: #1e293b;
                 --border-radius: 12px;
                 --card-border-radius: 16px;
@@ -51,7 +49,7 @@ function renderHeader($page)
                 background: rgba(255, 255, 255, 0.9) !important;
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px);
-                box-shadow: 0 4px 20px -1px rgba(81, 81, 81, 0.6);
+                box-shadow: 0 4px 20px -1px rgba(0, 0, 0, 0.1);
                 padding: 0.8rem 0;
                 border-radius: 0 0 var(--border-radius) var(--border-radius);
                 margin: 0 10px 10px 10px;
@@ -282,6 +280,13 @@ function renderHeader($page)
                 background-color: rgba(99, 102, 241, 0.1) !important;
             }
 
+            .badge {
+                font-size: 0.65rem;
+                padding: 0.35em 0.65em;
+                margin-left: -0.5em;
+                margin-top: -0.5em;
+            }
+
             .btn-primary {
                 background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
                 border: none;
@@ -339,16 +344,11 @@ function renderHeader($page)
                 background: var(--danger-color);
             }
 
+            /* Badge styling */
             .badge {
-                font-size: 0.75rem;
-                padding: 0.25em 0.5em;
-                border-radius: 50%;
-                background-color: var(--danger-color);
-                color: white;
+                padding: 0.5em 1em;
+                border-radius: 20px;
                 font-weight: 600;
-                line-height: 1;
-                min-width: 1.25em;
-                text-align: center;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
 
@@ -652,32 +652,12 @@ function renderHeader($page)
                     </ul>
                     <ul class="navbar-nav">
                         <?php if (isLoggedIn()): ?>
-                            <li class="nav-item">
-                                <a class="nav-link <?php echo $page === 'donate' ? 'active' : ''; ?>" href="index.php?page=donate"><i class="bi bi-heart me-1"></i>Ủng Hộ CLB</a>
-                            </li>
-                            <?php
-                            global $conn;
-                            // Lấy số lượng thông báo chưa đọc
-                            $unread_query = 'SELECT COUNT(*) as count FROM notifications n 
-                                            INNER JOIN notification_recipients nr ON n.id = nr.notification_id 
-                                            WHERE nr.user_id = ? AND nr.is_read = 0';
-                            $stmt = $conn->prepare($unread_query);
-                            $stmt->bind_param('i', $_SESSION['user_id']);
-                            $stmt->execute();
-                            $unread_count = $stmt->get_result()->fetch_assoc()['count'];
-
-                            // Debug: In giá trị $unread_count để kiểm tra
-                            // echo "Unread count: " . $unread_count; // Bỏ comment dòng này để kiểm tra giá trị
-                            ?>
-                            <li class="nav-item">
-                                <a class="nav-link position-relative" href="index.php?page=notifications">
-                                    <i class="bi bi-bell me-1"></i>
-                                    <?php if ($unread_count > 0): ?>
-                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                            <?php echo $unread_count; ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </a>
+                            <a class="nav-link position-relative" href="index.php?page=donate">
+                                <i class="bi bi-heart me-1"> Đóng Góp</i>
+                            </a>
+                            <a class="nav-link position-relative" href="index.php?page=notifications">
+                                <i class="bi bi-bell me-1">Thông báo</i>
+                            </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link <?php echo $page === 'profile' ? 'active' : ''; ?>" href="index.php?page=profile"><i class="bi bi-person me-1"></i>Trang Cá Nhân</a>

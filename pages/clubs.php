@@ -344,6 +344,7 @@ if (isset($_GET['id'])) {
     $sql = "SELECT c.*, COUNT(DISTINCT cm.id) as member_count 
            FROM clubs c 
            LEFT JOIN club_members cm ON c.id = cm.club_id AND cm.status = 'approved'
+           WHERE c.status = 'active'
            GROUP BY c.id";
     $result = $conn->query($sql);
     $clubs = $result->fetch_all(MYSQLI_ASSOC);

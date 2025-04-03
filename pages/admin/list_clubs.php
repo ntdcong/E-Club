@@ -60,11 +60,6 @@ $clubs = $result->fetch_all(MYSQLI_ASSOC);
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-outline-danger" 
-                                            onclick="confirmDelete(<?php echo $club['id']; ?>)">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -75,11 +70,3 @@ $clubs = $result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
 </div>
-
-<script>
-function confirmDelete(clubId) {
-    if (confirm('Bạn có chắc chắn muốn xóa CLB này không?')) {
-        window.location.href = `index.php?page=admin&action=delete_club&id=${clubId}`;
-    }
-}
-</script>

@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['donation_id']) && iss
 
     if (in_array($status, $valid_statuses)) {
         // Lấy danh sách clubs mà user là leader
-        $club_query = "SELECT c.id FROM clubs c WHERE c.leader_id = ?";
+        $club_query = "SELECT c.id FROM clubs c INNER JOIN club_leaders cl ON c.id = cl.club_id WHERE cl.user_id = ?";
         $stmt = $conn->prepare($club_query);
         $stmt->bind_param("i", $_SESSION['user_id']);
         $stmt->execute();
