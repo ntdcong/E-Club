@@ -1,17 +1,14 @@
 <?php
-// Phần PHP giữ nguyên, chỉ chỉnh giao diện bên dưới
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config.php';
 
-// Check login status
+// Check trạng thái login
 if (!isset($_SESSION['user_id'])) {
     header('Location: /auth/login.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
     exit;
 }
-
 use tttran\viet_qr_generator\Generator;
 
-// Fetch clubs with bank information
 $clubs_query = 'SELECT id, name, bank_info FROM clubs WHERE bank_info IS NOT NULL AND JSON_VALID(bank_info) = 1';
 $clubs_result = $conn->query($clubs_query);
 $clubs = $clubs_result->fetch_all(MYSQLI_ASSOC);
@@ -23,7 +20,6 @@ $amount = '';
 $message = '';
 $error = '';
 
-// Get selected club information
 if (isset($_GET['club_id']) && !empty($_GET['club_id'])) {
     $club_id = (int) $_GET['club_id'];
     $stmt = $conn->prepare('SELECT id, name, bank_info FROM clubs WHERE id = ? AND bank_info IS NOT NULL');
@@ -553,7 +549,7 @@ require_once __DIR__ . '/../templates/layout.php';
                 this.textContent = 'Đang xử lý...';
                 setTimeout(() => {
                     window.location.href = 'index.php?page=confirm_donation';
-                }, 500); // Thêm delay nhẹ để hiển thị "Đang xử lý..."
+                }, 500); 
             });
         }
         window.copyToClipboard = function(text) {

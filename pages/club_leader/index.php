@@ -9,7 +9,6 @@ if (!isClubLeader()) {
     redirect('/');
 }
 
-// Get clubs managed by the current club leader
 $sql = "SELECT c.* FROM clubs c 
        INNER JOIN club_leaders cl ON c.id = cl.club_id 
        WHERE cl.user_id = ?";
@@ -273,6 +272,9 @@ $managed_clubs = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                         </a>
                         <a href="index.php?page=club_leader/notifications&club_id=<?php echo $club['id']; ?>" class="btn btn-modern btn-info">
                             <i class="bi bi-bell"></i> Thông báo
+                        </a>
+                        <a href="index.php?page=club_leader/email_notifications&club_id=<?php echo $club['id']; ?>" class="btn btn-modern btn-primary">
+                            <i class="bi bi-envelope"></i> Thông báo Email
                         </a>
                         <a href="index.php?page=club_leader/donations&club_id=<?php echo $club['id']; ?>" class="btn btn-modern btn-warning">
                             <i class="bi bi-heart"></i> Đóng góp

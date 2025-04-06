@@ -1,5 +1,6 @@
 <?php
-function renderAdminHeader() {
+function renderAdminHeader()
+{
     if (!isAdmin()) {
         flashMessage('Bạn không có quyền truy cập trang này', 'danger');
         redirect('/index.php?page=home');
@@ -132,8 +133,10 @@ function renderAdminHeader() {
                     <a class="nav-link <?php echo isset($_GET['action']) && $_GET['action'] === 'manage_leaders' ? 'active' : ''; ?>" 
                        href="index.php?page=admin&action=manage_leaders">
                         <i class="bi bi-person-badge-fill me-2"></i> Quản lý trưởng CLB
-                    </a>
-                    
+                    </a>        
+                    <a class="nav-link <?php echo ($page == 'admin/email_broadcast') ? 'active' : ''; ?>" href="index.php?page=admin/email_broadcast">
+                        <i class="bi bi-megaphone"></i> Gửi Email Hệ Thống
+                    </a>                  
                     <div class="border-top my-4"></div>
                     
                     <a class="nav-link text-warning" href="index.php?page=home">
@@ -151,7 +154,7 @@ function renderAdminHeader() {
                 <header class="admin-header p-3 d-flex justify-content-between align-items-center sticky-top">
                     <div>
                         <h4 class="m-0 fw-bold text-primary">
-                            <?php 
+                            <?php
                             if (!isset($_GET['action'])) {
                                 echo 'Bảng điều khiển';
                             } elseif ($_GET['action'] === 'manage_users') {
@@ -184,14 +187,15 @@ function renderAdminHeader() {
                         echo "<div class='alert alert-{$type} alert-dismissible fade show shadow-sm' role='alert'>";
                         echo "<i class='bi bi-info-circle me-2'></i>" . $message;
                         echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
-                        echo "</div>";
+                        echo '</div>';
                         unset($_SESSION['flash_message'], $_SESSION['flash_type']);
                     }
                     ?>
     <?php
 }
 
-function renderAdminFooter() {
+function renderAdminFooter()
+{
     ?>
                 </main>
                 

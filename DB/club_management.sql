@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2025 at 11:45 AM
+-- Generation Time: Apr 06, 2025 at 09:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -69,7 +69,7 @@ CREATE TABLE `clubs` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` enum('active','inactive') NOT NULL DEFAULT 'active',
   `image_url` varchar(255) DEFAULT NULL,
-  `bank_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`bank_info`))
+  `bank_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -78,9 +78,11 @@ CREATE TABLE `clubs` (
 
 INSERT INTO `clubs` (`id`, `name`, `description`, `created_at`, `status`, `image_url`, `bank_info`) VALUES
 (1, 'KARATE', 'Đam mê võ thuật bơi vào đây', '2025-02-26 15:36:19', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490302/clubs/tpwzospwevjfybpx6ogl.jpg', '{\"account_number\":\"0818388343\",\"account_name\":\"NGUYEN THANH DUY CONG\",\"bank_name\":\"MBBank\",\"bank_bin\":\"970422\",\"code\":\"MB\"}'),
-(2, 'BÓNG ĐÁ', 'Mê bóng thì vào', '2025-02-26 15:59:36', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490146/clubs/hbjw1sdnha2hskmach3k.jpg', ''),
-(3, 'NHẠC KỊCH', 'Ca hát là đam mê, diễn xuất là thượng hạng.', '2025-02-27 07:23:19', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490410/clubs/fzmavshxtcloynmaym8o.png', '{\"account_number\":\"0818388343\",\"account_name\":\"NGUYEN THANH DUY CONG\",\"bank_name\":\"MBBank\",\"bank_bin\":\"970422\",\"code\":\"MB\"}'),
-(5, 'Mạng Máy Tính', 'Chia sẻ đam mê với chuyên nghành mạng máy tính', '2025-03-04 01:16:25', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741490322/clubs/lwfhqai5ndmfql6xilzi.jpg', '{\"account_number\":\"9818388343\",\"account_name\":\"NGUYEN THANH DUY CONG\",\"bank_name\":\"Vietcombank\",\"bank_bin\":\"970436\",\"code\":\"VCB\"}');
+(2, 'BÓNG ĐÁ', 'Mê bóng thì vào nhé mọi người', '2025-02-26 15:59:36', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743832608/soccer_imntqa.jpg', ''),
+(3, 'NHẠC KỊCH', 'Ca hát là đam mê, diễn xuất là thượng hạng.', '2025-02-27 07:23:19', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743832609/nhackich_bg6s6e.jpg', '{\"account_number\":\"0818388343\",\"account_name\":\"NGUYEN THANH DUY CONG\",\"bank_name\":\"MBBank\",\"bank_bin\":\"970422\",\"code\":\"MB\"}'),
+(5, 'Mạng Máy Tính', 'Chia sẻ đam mê với chuyên nghành mạng máy tính', '2025-03-04 01:16:25', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743832870/nat_in_jqjvwg.png', '{\"account_number\":\"9818388343\",\"account_name\":\"NGUYEN THANH DUY CONG\",\"bank_name\":\"Vietcombank\",\"bank_bin\":\"970436\",\"code\":\"VCB\"}'),
+(6, 'test', 'fsdfsd', '2025-04-03 09:44:49', 'inactive', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743673488/clubs/ktom0nepniygdh6c3bh2.jpg', NULL),
+(7, 'ABC', 'Nhóm ABC', '2025-04-06 18:25:11', 'active', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743963909/clubs/fubk7ovzsz4x4evttgrp.png', NULL);
 
 -- --------------------------------------------------------
 
@@ -103,7 +105,8 @@ INSERT INTO `club_leaders` (`id`, `user_id`, `club_id`, `appointed_at`) VALUES
 (1, 5, 1, '2025-02-26 15:40:34'),
 (2, 6, 2, '2025-02-26 16:51:06'),
 (3, 10, 3, '2025-03-03 02:00:47'),
-(4, 11, 5, '2025-03-04 01:16:42');
+(4, 11, 5, '2025-03-04 01:16:42'),
+(5, 25, 7, '2025-04-06 18:31:51');
 
 -- --------------------------------------------------------
 
@@ -136,7 +139,12 @@ INSERT INTO `club_members` (`id`, `user_id`, `club_id`, `status`, `joined_at`) V
 (12, 12, 2, 'pending', '2025-03-11 04:14:18'),
 (13, 12, 3, 'approved', '2025-03-11 04:14:23'),
 (14, 12, 5, 'approved', '2025-03-11 04:14:26'),
-(15, 12, 1, 'approved', '2025-03-11 04:18:47');
+(15, 12, 1, 'approved', '2025-03-11 04:18:47'),
+(16, 8, 3, 'pending', '2025-04-03 09:26:28'),
+(17, 20, 7, 'approved', '2025-04-06 18:27:12'),
+(18, 22, 7, 'approved', '2025-04-06 18:28:06'),
+(19, 17, 7, 'approved', '2025-04-06 18:28:28'),
+(20, 24, 7, 'approved', '2025-04-06 18:30:22');
 
 -- --------------------------------------------------------
 
@@ -164,7 +172,8 @@ INSERT INTO `club_messages` (`id`, `club_id`, `sender_id`, `message`, `created_a
 (5, 1, 12, 'Sao đâu hết rồi', '2025-03-24 06:22:21'),
 (6, 1, 7, 'Đây, tôi đây', '2025-03-24 06:22:48'),
 (7, 1, 12, 'Hihi', '2025-03-29 10:10:23'),
-(8, 1, 12, 'Nhớ donate nha mọi người', '2025-04-01 09:21:47');
+(8, 1, 12, 'Nhớ donate nha mọi người', '2025-04-01 09:21:47'),
+(9, 1, 12, 'Nhớ donate 83k', '2025-04-01 14:22:55');
 
 -- --------------------------------------------------------
 
@@ -219,11 +228,15 @@ CREATE TABLE `donations` (
 
 INSERT INTO `donations` (`id`, `user_id`, `amount`, `message`, `status`, `transaction_code`, `created_at`, `club_id`) VALUES
 (7, 12, 30000.00, 'Ủng hộ', 'pending', 'DON_67eb8021963df9.69687390', '2025-04-01 05:57:08', 5),
-(8, 12, 30000.00, 'Thank you', 'pending', 'DON_67eb80ddb51e17.83360744', '2025-04-01 06:00:03', 3),
+(8, 12, 30000.00, 'Thank you', 'completed', 'DON_67eb80ddb51e17.83360744', '2025-04-01 06:00:03', 3),
 (9, 12, 20000.00, 'Tiếp nè', 'completed', 'DON_67eb81077d04e8.21283900', '2025-04-01 06:00:48', 3),
 (38, 12, 5000.00, 'Very like', 'completed', 'DON_67eb908badbed0.70952011', '2025-04-01 07:06:54', 3),
 (39, 7, 200000.00, 'Hehe', 'completed', 'DON_67eb914183a700.69508159', '2025-04-01 07:09:57', 3),
-(42, 12, 5000.00, 'Cố lên', 'completed', 'DON_67eba54de14e59.27218114', '2025-04-01 08:35:30', 3);
+(42, 12, 5000.00, 'Cố lên', 'completed', 'DON_67eba54de14e59.27218114', '2025-04-01 08:35:30', 3),
+(43, 12, 83000.00, 'Trả nợ cho tao Thắng ơi', 'completed', 'DON_67ebf5eedbdec8.85016383', '2025-04-01 14:20:26', 1),
+(44, 8, 5000.00, 'Của ít lòng luộc', 'completed', 'DON_67ee5466b22ba2.16302479', '2025-04-03 09:27:14', 1),
+(45, 9, 200000.00, 'Em muốn ủng hộ CLB', 'completed', 'DON_67efee8a565659.62321124', '2025-04-04 14:37:48', 1),
+(46, 8, 200000.00, 'Gọi tôi là gì ?', 'pending', 'DON_67f08aa34ac280.43079122', '2025-04-05 01:43:05', 5);
 
 -- --------------------------------------------------------
 
@@ -239,23 +252,29 @@ CREATE TABLE `events` (
   `event_date` datetime NOT NULL,
   `status` enum('pending','approved','rejected') DEFAULT 'pending',
   `created_by` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `notification_before_event` tinyint(1) DEFAULT 0,
+  `notification_on_event_day` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `events`
 --
 
-INSERT INTO `events` (`id`, `club_id`, `title`, `description`, `event_date`, `status`, `created_by`, `created_at`) VALUES
-(1, 2, 'Hạm đội 1', 'Đá đê', '2025-03-08 08:30:00', 'approved', 6, '2025-02-26 17:30:12'),
-(2, 1, 'Giao Lưu FPT', 'Giao lưu vui vẻ', '2025-03-04 08:00:00', 'approved', 5, '2025-02-27 07:26:24'),
-(3, 2, 'Vinh Quang FBT', 'Vinh quang cho FBT', '2025-03-03 06:00:00', 'approved', 6, '2025-03-01 10:10:09'),
-(4, 3, 'Lương Sơn Bàn Truyện', 'Với sự tham gia của các nghệ nhân: Tiến Gầy, Tiến Béo, Labubu,...', '2025-03-23 08:15:00', 'approved', 10, '2025-03-03 02:14:21'),
-(5, 5, 'Đi Bơi', 'Bơi giao lưu vui vẻ giữa các thành viên', '2025-03-08 13:00:00', 'approved', 11, '2025-03-04 01:17:34'),
-(6, 1, 'Thường Niên IV', 'Sự kiện tranh đai vô địch hàng năm, hãy tham gia và giành lấy vinh quang nào.', '2025-05-15 17:55:00', 'approved', 5, '2025-03-11 03:29:12'),
-(7, 1, 'Giao luu vo thuat', 'Danh th Tien', '2025-03-13 14:43:00', 'approved', 5, '2025-03-12 03:42:01'),
-(8, 1, 'Tứ Hùng Tranh Đấu', 'Ngày thi đấu đỉnh cao của bốn đại cao thủ giữa 2 trường, hãy tham gia và cổ vũ cho gà nhà nhé', '2025-04-18 09:00:00', 'approved', 5, '2025-03-29 09:50:04'),
-(9, 3, 'Kịch Hí La Lan Bản', 'Một cõi để nhớ...', '2025-05-25 09:00:00', 'pending', 10, '2025-04-01 09:14:30');
+INSERT INTO `events` (`id`, `club_id`, `title`, `description`, `event_date`, `status`, `created_by`, `created_at`, `notification_before_event`, `notification_on_event_day`) VALUES
+(1, 2, 'Hạm đội 1', 'Đá đê', '2025-03-08 08:30:00', 'approved', 6, '2025-02-26 17:30:12', 0, 0),
+(2, 1, 'Giao Lưu FPT', 'Giao lưu vui vẻ', '2025-03-04 08:00:00', 'approved', 5, '2025-02-27 07:26:24', 0, 0),
+(3, 2, 'Vinh Quang FBT', 'Vinh quang cho FBT', '2025-03-03 06:00:00', 'approved', 6, '2025-03-01 10:10:09', 0, 0),
+(4, 3, 'Lương Sơn Bàn Truyện', 'Với sự tham gia của các nghệ nhân: Tiến Gầy, Tiến Béo, Labubu,...', '2025-03-23 08:15:00', 'approved', 10, '2025-03-03 02:14:21', 0, 0),
+(5, 5, 'Đi Bơi', 'Bơi giao lưu vui vẻ giữa các thành viên', '2025-03-08 13:00:00', 'approved', 11, '2025-03-04 01:17:34', 0, 0),
+(6, 1, 'Thường Niên IV', 'Sự kiện tranh đai vô địch hàng năm, hãy tham gia và giành lấy vinh quang nào.', '2025-05-15 17:55:00', 'approved', 5, '2025-03-11 03:29:12', 0, 0),
+(7, 1, 'Giao luu vo thuat', 'Danh th Tien', '2025-03-13 14:43:00', 'approved', 5, '2025-03-12 03:42:01', 0, 0),
+(8, 1, 'Tứ Hùng Tranh Đấu', 'Ngày thi đấu đỉnh cao của bốn đại cao thủ giữa 2 trường, hãy tham gia và cổ vũ cho gà nhà nhé', '2025-04-18 09:00:00', 'approved', 5, '2025-03-29 09:50:04', 0, 0),
+(9, 3, 'Kịch Hí La Lan Bản', 'Một cõi để nhớ...', '2025-05-25 09:00:00', 'approved', 10, '2025-04-01 09:14:30', 0, 0),
+(10, 1, 'teets', 'ww', '2025-04-04 08:50:00', 'rejected', 5, '2025-04-05 01:48:15', 0, 0),
+(11, 1, 'ewe', 'ewew', '2025-04-03 10:50:00', 'rejected', 5, '2025-04-05 01:48:35', 0, 0),
+(12, 1, 'Báo cáo đồ án', 'Cố lên', '2025-04-06 12:50:00', 'pending', 5, '2025-04-05 01:48:58', 0, 0),
+(13, 7, 'Báo Cáo Môn Mã Nguồn Mở', 'Báo cáo đồ án nhé', '2025-04-12 08:00:00', 'approved', 25, '2025-04-06 18:34:13', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -291,7 +310,12 @@ INSERT INTO `notifications` (`id`, `club_id`, `sender_id`, `title`, `message`, `
 (16, 3, 4, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-01 07:10:15'),
 (17, 3, 4, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn cho CLB NHẠC KỊCH đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-01 08:52:17'),
 (18, 3, 4, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn cho CLB NHẠC KỊCH đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-01 08:52:47'),
-(19, 3, 10, 'LUYỆN TẬP', 'Mọi người hãy luyện tập chăm chỉ cho sự kiện sắp tới nhé', '2025-04-01 09:33:12');
+(19, 3, 10, 'LUYỆN TẬP', 'Mọi người hãy luyện tập chăm chỉ cho sự kiện sắp tới nhé', '2025-04-01 09:33:12'),
+(20, 3, 10, 'MAI HỌP CLUB', 'Club đi chơi', '2025-04-01 14:18:06'),
+(21, 3, 4, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn cho CLB NHẠC KỊCH đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-01 14:23:41'),
+(22, 1, 5, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn cho CLB KARATE đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-03 09:29:50'),
+(23, 1, 5, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn cho CLB KARATE đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-03 09:31:11'),
+(24, 1, 5, 'Xác nhận đóng góp', 'Khoản đóng góp của bạn cho CLB KARATE đã được xác nhận. Cảm ơn bạn đã ủng hộ!', '2025-04-04 14:38:07');
 
 -- --------------------------------------------------------
 
@@ -339,7 +363,13 @@ INSERT INTO `notification_recipients` (`id`, `notification_id`, `user_id`, `is_r
 (32, 17, 12, 1, '2025-04-01 08:52:26'),
 (33, 18, 12, 1, '2025-04-01 08:52:57'),
 (34, 19, 7, 0, NULL),
-(35, 19, 12, 1, '2025-04-01 09:38:53');
+(35, 19, 12, 1, '2025-04-01 09:38:53'),
+(36, 20, 7, 0, NULL),
+(37, 20, 12, 1, '2025-04-01 14:18:34'),
+(39, 21, 12, 1, '2025-04-01 14:23:57'),
+(40, 22, 8, 1, '2025-04-03 09:31:20'),
+(41, 23, 8, 1, '2025-04-03 09:31:14'),
+(42, 24, 9, 1, '2025-04-04 14:41:09');
 
 -- --------------------------------------------------------
 
@@ -363,18 +393,22 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `avatar_url`, `last_activity`) VALUES
-(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24', NULL, '2025-03-23 18:00:06'),
+(4, 'Siêu Cấp Quản Trị Viên', 'admin@gmail.com', '$2y$10$TcmIVPd5VvzSIZmoDmane.YuIZhv44Aasmr6F5d7aKepIoSVxfQcm', 'admin', '2025-02-26 15:31:24', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743677096/avatars/ini9wfqwawkflwyhxy7e.jpg', '2025-04-03 10:44:57'),
 (5, 'Trưởng CLB Siêu Cấp', 'club@gmail.com', '$2y$10$8NEz7k17kV26e.H4eTz5V.d67CKRBnwpYyMTyCg/VgUjFo5yu326q', 'club_leader', '2025-02-26 15:31:54', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741684737/avatars/ardolyp5eyhkyispa0qj.jpg', '2025-03-23 18:00:06'),
 (6, 'Thomas', 'user@gmail.com', '$2y$10$bgcvwQVYAtYzhcfkauu.4eC0tx3BGHr3d2Bb.AfIpLQilwFAlzDmy', 'user', '2025-02-26 15:32:04', NULL, '2025-03-23 18:00:06'),
 (7, 'John Mikey', 'john@gmail.com', '$2y$10$78wvX6iwBPe9qgMVE7EiCuWmoqea3YbE3XL37OfZh2R8iA8AnrNFy', 'user', '2025-02-26 17:16:06', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741495050/avatars/zajk92zkbb4n61huhx3v.jpg', '2025-03-24 06:49:03'),
-(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743491686/avatars/wp5ltzea1yntsoskxlvi.jpg', '2025-04-01 07:14:47'),
+(8, 'Quốc Tiến', 'quoctien@gmail.com', '$2y$10$He0KxuuirPFaRKtN2e6KeOCx5zAfVPc65PBFQOYWQCPUPB28utTwm', 'user', '2025-03-01 10:05:05', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1743491686/avatars/wp5ltzea1yntsoskxlvi.jpg', '2025-04-05 01:46:36'),
 (9, 'Thành Tiến', 'thanhtien@gmail.com', '$2y$10$22Wo0vkQ72JfZ4JFTj8VWuNQgl3LAt1/SUV1pkooMWRf6ruYaZMM6', 'user', '2025-03-01 10:05:24', NULL, '2025-03-23 18:00:06'),
 (10, 'Công', 'cong@gmail.com', '$2y$10$BYUzx2sft8jawlieUEOq5OhkjLAGG27m1R.RD2P5LLLHoE.P7n9Pm', 'club_leader', '2025-03-03 02:00:26', NULL, '2025-03-29 10:02:42'),
 (11, 'Phạm Lê Gia Hân', 'giahan@gmail.com', '$2y$10$6nOjI29BmN5aLq.ZV4CwBezxpYQB7InCHZbLeeiScjoeOTzQY1jgu', 'club_leader', '2025-03-04 01:15:32', NULL, '2025-03-23 18:00:06'),
-(12, 'Hà Huy Chiến Thắng', 'chienthang@gmail.com', '$2y$10$kDR4FFyE81aJe1qpF2ki5.mJn6h/5Q1EJy5BECHbr8n5dzDADnEYK', 'user', '2025-03-11 04:13:59', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741666643/avatars/s5rarwf3hirot36fd8ot.jpg', '2025-04-01 09:23:39'),
+(12, 'Hà Huy Chiến Thắng', 'chienthang@gmail.com', '$2y$10$kDR4FFyE81aJe1qpF2ki5.mJn6h/5Q1EJy5BECHbr8n5dzDADnEYK', 'user', '2025-03-11 04:13:59', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741666643/avatars/s5rarwf3hirot36fd8ot.jpg', '2025-04-01 14:22:54'),
 (17, 'Nguyễn Thành Duy Công', 'duycong2500@gmail.com', '$2y$10$Zg91CDq4RegsAGgbbvc07eqOhNmOhvxDauxy4twAgkXF7MDFVnC5K', 'user', '2025-03-11 09:18:24', NULL, '2025-03-23 18:00:06'),
 (19, 'Tiến Nest JS', 'tiennestjs@gmail.com', '$2y$10$U1P9D8d8pYRC93wqC224AuKYp0S03MHmNT6Noc8gqj1/Y0ZX5Un/.', 'user', '2025-03-12 01:16:24', 'https://res.cloudinary.com/dsxpjcve6/image/upload/v1741742311/avatars/vsxe1sqrhvcxozlhkjgk.jpg', '2025-04-01 09:44:13'),
-(20, 'Hân Palm', 'phamhanst20@gmail.com', '$2y$10$0.dZX/Pb9W7kUeyc5.JAFeRICZd6mF94KWtZQEX8xMhiFLHbelHpW', 'user', '2025-03-12 03:38:52', NULL, '2025-04-01 09:43:55');
+(20, 'Hân Palm', 'phamhanst20@gmail.com', '$2y$10$0.dZX/Pb9W7kUeyc5.JAFeRICZd6mF94KWtZQEX8xMhiFLHbelHpW', 'user', '2025-03-12 03:38:52', NULL, '2025-04-01 09:43:55'),
+(22, 'Test Mail', 'ofme2580@gmail.com', '$2y$10$gpwA.yF.oIPf8EUj2Q2grOi7y9Z77loa2FB2cicEQR8lujkxzozTK', 'user', '2025-04-01 14:27:08', NULL, '2025-04-01 14:27:08'),
+(23, 'Võ Ngọc Anh', 'anhhung05032003@gmail.com', '$2y$10$pq0C1K9GK51mRRELd9Eh4OWUP3L47vaGuNpQ5bhW0ilyecf4uidJu', 'user', '2025-04-04 14:15:46', NULL, '2025-04-04 14:15:46'),
+(24, 'Quốc Tiến', 'nguyenquoctien270102@gmail.com', '$2y$10$Oh.vpsZd5sRHTsrEddYwZ.Ge.vzA04FD1d1n/El5cLsTkeyppNUze', 'user', '2025-04-06 18:30:01', NULL, '2025-04-06 18:30:01'),
+(25, 'ABC Leader', 'abc@gmail.com', '$2y$10$zhhI/oXJLAHZvyk1kjppA.RwVCzbkt/whmzNiLI5SB0Oq857c34qm', 'club_leader', '2025-04-06 18:31:13', NULL, '2025-04-06 18:31:51');
 
 --
 -- Indexes for dumped tables
@@ -480,25 +514,25 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `clubs`
 --
 ALTER TABLE `clubs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `club_leaders`
 --
 ALTER TABLE `club_leaders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `club_members`
 --
 ALTER TABLE `club_members`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `club_messages`
 --
 ALTER TABLE `club_messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `club_posts`
@@ -510,31 +544,31 @@ ALTER TABLE `club_posts`
 -- AUTO_INCREMENT for table `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `notification_recipients`
 --
 ALTER TABLE `notification_recipients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables
