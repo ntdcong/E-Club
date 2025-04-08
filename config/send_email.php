@@ -40,7 +40,7 @@ function sendWelcomeEmail($toEmail, $toName): bool|string
                     <li>📚 Truy cập tài nguyên học tập chất lượng cao.</li>
                     <li>🤝 Kết nối với những thành viên tài năng trong cộng đồng.</li>
                 </ul>
-                <p style='font-size: 15px;'>Để bắt đầu, bạn có thể <a href='https://eclub.com/login' style='color: #2980b9; text-decoration: none;'>đăng nhập ngay</a> và khám phá những điều thú vị đang chờ đón!</p>
+                <p style='font-size: 15px;'>Để bắt đầu, bạn có thể <a href='https://e-club.kesug.com/index.php?page=login' style='color: #2980b9; text-decoration: none;'>đăng nhập ngay</a> và khám phá những điều thú vị đang chờ đón!</p>
             </div>
             <div style='background-color: #ecf0f1; padding: 15px; text-align: center;'>
                 <p style='font-size: 14px; margin: 0;'>Cần hỗ trợ? Liên hệ chúng tôi qua <a href='mailto:support@eclub.com' style='color: #2980b9;'>support@eclub.com</a>.</p>

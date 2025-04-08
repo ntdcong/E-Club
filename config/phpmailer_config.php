@@ -18,7 +18,7 @@ function configureMailer() {
         $mail->CharSet = 'UTF-8';
 
         // Recipients
-        $mail->setFrom('duycong2580@gmail.com', 'Club Management System');
+        $mail->setFrom('duycong2580@gmail.com', 'Hệ Thống E-Club');
         return $mail;
     } catch (Exception $e) {
         error_log("Mailer Error: {$mail->ErrorInfo}");
