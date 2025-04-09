@@ -1,7 +1,12 @@
 <?php
 // Kiểm tra quyền truy cập
 if (!isClubLeader()) {
-    redirectWithMessage('danger', 'Bạn không có quyền truy cập vào trang này!', 'index.php');
+    // Set error message in session
+    $_SESSION['message'] = 'Bạn không có quyền truy cập vào trang này!';
+    $_SESSION['message_type'] = 'danger';
+    
+    // Redirect to index page
+    header('Location: index.php');
     exit;
 }
 
@@ -17,7 +22,12 @@ $stmt->execute();
 $club = $stmt->get_result()->fetch_assoc();
 
 if (!$club) {
-    redirectWithMessage('danger', 'Bạn không quản lý CLB này hoặc CLB không tồn tại!', 'index.php?page=club_leader');
+    // Set error message in session
+    $_SESSION['message'] = 'Bạn không quản lý CLB này hoặc CLB không tồn tại!';
+    $_SESSION['message_type'] = 'danger';
+    
+    // Redirect to club leader page
+    header('Location: index.php?page=club_leader');
     exit;
 }
 

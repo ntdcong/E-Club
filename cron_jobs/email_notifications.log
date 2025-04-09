@@ -1,0 +1,51 @@
+[2025-04-09 18:06:05] Bắt đầu tiến trình gửi thông báo email tự động
+[2025-04-09 18:06:05] Kiểm tra kết nối database...
+[2025-04-09 18:06:05] Kết nối database thành công
+[2025-04-09 18:06:05] Ngày hiện tại: 2025-04-09 - Ngày mai: 2025-04-10
+[2025-04-09 18:06:05] Tổng số sự kiện trong hệ thống: 17
+[2025-04-09 18:06:05] Sự kiện gần nhất: 'Kịch Hí La Lan Bản' vào ngày 2025-05-25 09:00:00
+[2025-04-09 18:06:05] Bắt đầu truy vấn sự kiện diễn ra vào ngày mai (2025-04-10)
+[2025-04-09 18:06:05] Tìm thấy 2 sự kiện sẽ diễn ra vào ngày mai
+[2025-04-09 18:06:05] Processing event details:
+[2025-04-09 18:06:05] - Event ID: 14
+[2025-04-09 18:06:05] - Title: Hội Làng Sake
+[2025-04-09 18:06:05] - Date: 2025-04-10 09:00:00
+[2025-04-09 18:06:05] - Status: approved
+[2025-04-09 18:06:05] - Club ID: 5
+[2025-04-09 18:06:05] - Club Name: Mạng Máy Tính
+[2025-04-09 18:06:05] - Total club members: 3
+[2025-04-09 18:06:09] Successfully sent reminder for event: Hội Làng Sake (ID: 14)
+[2025-04-09 18:06:09] Checking email configuration:
+[2025-04-09 18:06:09] - Email configuration successful
+[2025-04-09 18:06:09] - SMTP Host: smtp.gmail.com
+[2025-04-09 18:06:09] - SMTP Port: 587
+[2025-04-09 18:06:09] - From Address: duycong2580@gmail.com
+[2025-04-09 18:06:09] Processing event details:
+[2025-04-09 18:06:09] - Event ID: 17
+[2025-04-09 18:06:09] - Title: Lắp mạng cho Quốc Tiến
+[2025-04-09 18:06:09] - Date: 2025-04-10 07:30:00
+[2025-04-09 18:06:09] - Status: approved
+[2025-04-09 18:06:09] - Club ID: 7
+[2025-04-09 18:06:09] - Club Name: ABC
+[2025-04-09 18:06:09] - Total club members: 4
+[2025-04-09 18:06:14] Successfully sent reminder for event: Lắp mạng cho Quốc Tiến (ID: 17)
+[2025-04-09 18:06:14] Checking email configuration:
+[2025-04-09 18:06:14] - Email configuration successful
+[2025-04-09 18:06:14] - SMTP Host: smtp.gmail.com
+[2025-04-09 18:06:14] - SMTP Port: 587
+[2025-04-09 18:06:14] - From Address: duycong2580@gmail.com
+[2025-04-09 18:06:14] Đã gửi 2/2 thông báo trước sự kiện
+[2025-04-09 18:06:14] Bắt đầu truy vấn sự kiện diễn ra hôm nay (2025-04-09)
+[2025-04-09 18:06:14] Tìm thấy 2 sự kiện diễn ra hôm nay
+[2025-04-09 18:06:14] Xử lý sự kiện: Hội Giã Bánh Gạo (ID: 15) - CLB: Mạng Máy Tính
+[2025-04-09 18:06:18] Đã gửi thông báo vào ngày diễn ra sự kiện cho: Hội Giã Bánh Gạo (ID: 15)
+[2025-04-09 18:06:18] Xử lý sự kiện: Gặp gỡ trùm mạng Hutech (ID: 16) - CLB: ABC
+[2025-04-09 18:06:22] Đã gửi thông báo vào ngày diễn ra sự kiện cho: Gặp gỡ trùm mạng Hutech (ID: 16)
+[2025-04-09 18:06:22] Đã gửi 2/2 thông báo vào ngày diễn ra sự kiện
+[2025-04-09 18:06:22] === Debug: Checking events around current dates ===
+[2025-04-09 18:06:22] Event: 'Hội Làng Sake' on 2025-04-10 09:00:00 - Notification flags: before=1, on_day=1
+[2025-04-09 18:06:22] Event: 'Hội Giã Bánh Gạo' on 2025-04-09 17:00:00 - Notification flags: before=1, on_day=1
+[2025-04-09 18:06:22] Event: 'Gặp gỡ trùm mạng Hutech' on 2025-04-09 20:30:00 - Notification flags: before=1, on_day=1
+[2025-04-09 18:06:22] Event: 'Lắp mạng cho Quốc Tiến' on 2025-04-10 07:30:00 - Notification flags: before=1, on_day=1
+[2025-04-09 18:06:22] === End debug section ===
+[2025-04-09 18:06:22] Kết thúc tiến trình gửi thông báo email tự động

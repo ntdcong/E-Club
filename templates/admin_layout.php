@@ -134,7 +134,7 @@ function renderAdminHeader()
                        href="index.php?page=admin&action=manage_leaders">
                         <i class="bi bi-person-badge-fill me-2"></i> Quản lý trưởng CLB
                     </a>        
-                    <a class="nav-link <?php echo ($page == 'admin/email_broadcast') ? 'active' : ''; ?>" href="index.php?page=admin/email_broadcast">
+                    <a class="nav-link <?php echo (isset($_GET['page']) && $_GET['page'] == 'admin/email_broadcast') ? 'active' : ''; ?>" href="index.php?page=admin/email_broadcast">
                         <i class="bi bi-megaphone"></i> Gửi Email Hệ Thống
                     </a>                  
                     <div class="border-top my-4"></div>

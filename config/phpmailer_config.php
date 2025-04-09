@@ -2,26 +2,35 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require 'vendor/autoload.php';
+// Update the autoload path to use absolute path
+require_once __DIR__ . '/../vendor/autoload.php';
 
 function configureMailer() {
     $mail = new PHPMailer(true);
     try {
         // Server settings
+        $mail->SMTPDebug = 2; // Enable verbose debug output
+        $mail->Debugoutput = function($str, $level) {
+            error_log("PHPMailer Debug: $str");
+        };
+        
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'duycong2580@gmail.com';
-        $mail->Password = 'bfkr alnw rntj rkua'; 
+        $mail->Password = 'bfkr alnw rntj rkua';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         $mail->CharSet = 'UTF-8';
 
         // Recipients
         $mail->setFrom('duycong2580@gmail.com', 'Hệ Thống E-Club');
+        
+        error_log("Mailer configured successfully");
         return $mail;
     } catch (Exception $e) {
-        error_log("Mailer Error: {$mail->ErrorInfo}");
+        error_log("Mailer Configuration Error: " . $e->getMessage());
+        error_log("Detailed Error Info: " . $mail->ErrorInfo);
         return null;
     }
 }
@@ -58,46 +67,56 @@ $email_footer = "
  * @return bool Kết quả gửi email (true/false)
  */
 function sendMail($recipients, $subject, $body, $attachments = []) {
-    // Truy cập biến toàn cục header/footer
     global $email_header, $email_footer;
+    
+    error_log("Starting sendMail function");
+    error_log("Recipients: " . print_r($recipients, true));
+    error_log("Subject: " . $subject);
     
     $mail = configureMailer();
     
     if (!$mail) {
+        error_log("Failed to configure mailer");
         return false;
     }
     
     try {
-        // Thêm người nhận
+        // Add recipients
         foreach ($recipients as $email => $name) {
             if (is_numeric($email)) {
-                // Nếu chỉ truyền vào email mà không có tên
+                error_log("Adding recipient without name: $name");
                 $mail->addAddress($name);
             } else {
+                error_log("Adding recipient: $email ($name)");
                 $mail->addAddress($email, $name);
             }
         }
         
-        // Cấu hình email
+        // Configure email
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        // Ghép header, body và footer
-        $mail->Body    = $email_header . $body . $email_footer;
+        $mail->Body = $email_header . $body . $email_footer;
         
-        // Thêm các file đính kèm
+        // Add attachments
         if (!empty($attachments)) {
             foreach ($attachments as $attachment) {
                 if (file_exists($attachment)) {
                     $mail->addAttachment($attachment);
+                    error_log("Added attachment: $attachment");
+                } else {
+                    error_log("Attachment not found: $attachment");
                 }
             }
         }
         
-        // Gửi email
-        $mail->send();
+        // Send email
+        error_log("Attempting to send email...");
+        $result = $mail->send();
+        error_log("Email sent successfully");
         return true;
     } catch (Exception $e) {
-        error_log("Lỗi gửi email: {$mail->ErrorInfo}");
+        error_log("Mail Error: " . $e->getMessage());
+        error_log("Detailed Error Info: " . $mail->ErrorInfo);
         return false;
     }
 }
@@ -112,39 +131,46 @@ function sendMail($recipients, $subject, $body, $attachments = []) {
 function sendEventReminder($event_id, $days_before = 1) {
     global $conn;
     
-    // Lấy thông tin về sự kiện
+    error_log("Starting sendEventReminder for event ID: $event_id");
+    
+    // Get event info
     $stmt = $conn->prepare("SELECT e.*, c.name as club_name 
                            FROM events e 
                            INNER JOIN clubs c ON e.club_id = c.id 
-                           WHERE e.id = ?");
+                           WHERE e.id = ? AND e.status = 'approved'");
     $stmt->bind_param("i", $event_id);
     $stmt->execute();
     $event = $stmt->get_result()->fetch_assoc();
-    $stmt->close(); // Đóng statement
+    $stmt->close();
     
     if (!$event) {
+        error_log("Event not found or not approved: $event_id");
         return false;
     }
     
-    // Lấy danh sách thành viên tham gia sự kiện
+    error_log("Found event: " . $event['title']);
+    // Lấy tất cả thành viên CLB đã duyệt
     $stmt = $conn->prepare("SELECT u.email, u.name 
                            FROM users u 
-                           INNER JOIN event_attendees ea ON u.id = ea.user_id 
-                           WHERE ea.event_id = ? AND ea.status = 'attending'");
-    $stmt->bind_param("i", $event_id);
+                           INNER JOIN club_members cm ON u.id = cm.user_id 
+                           WHERE cm.club_id = ? AND cm.status = 'approved'");
+    $stmt->bind_param("i", $event['club_id']);
     $stmt->execute();
     $result = $stmt->get_result();
     
     $recipients = [];
     while ($row = $result->fetch_assoc()) {
         $recipients[$row['email']] = $row['name'];
+        error_log("Added recipient (club member): {$row['email']}");
     }
-    $stmt->close(); // Đóng statement
+    $stmt->close();
     
     if (empty($recipients)) {
-        // Không có ai đăng ký tham gia, không cần gửi mail
-        return true; // Coi như thành công vì không có lỗi
+        error_log("No approved club members found for event ID: $event_id, club ID: {$event['club_id']}");
+        return true; // Không có người nhận, coi như thành công
     }
+    
+    error_log("Total recipients (all club members): " . count($recipients));
     
     // Chuẩn bị nội dung email
     $subject = "Nhắc nhở: {$event['title']} sẽ diễn ra";
@@ -188,7 +214,7 @@ function sendEventReminder($event_id, $days_before = 1) {
 }
 
 /**
- * Gửi email thông báo chung đến các thành viên được chọn hoặc tất cả thành viên CLB.
+ * Gửi email thông báo chung đến các thành viên đườc chọn hoặc tất cả thành viên CLB.
  * 
  * @param int $club_id ID của CLB.
  * @param string $subject Tiêu đề email (chưa bao gồm tên CLB).
